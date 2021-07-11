@@ -1,0 +1,13 @@
+# Symbols for GCC
+
+LIBYAFARAYBINDINGS_4.0.0 {
+    global:
+        yafaray_bindings_getVersionMajor;
+        yafaray_bindings_getVersionMinor;
+        yafaray_bindings_getVersionPatch;
+        yafaray_bindings_getVersionString;
+        yafaray_bindings_deallocateCharPointer;
+
+    local:
+        *;
+};

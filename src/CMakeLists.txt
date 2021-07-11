@@ -1,146 +1,89 @@
-if(APPLE)
-        SET(CMAKE_INSTALL_RPATH @loader_path)
-else(APPLE)
-        SET(CMAKE_INSTALL_RPATH "$ORIGIN/:$ORIGIN/../:$ORIGIN/../lib/")
-endif(APPLE)
+add_library(libyafaray4_bindings)
+set_target_properties(libyafaray4_bindings PROPERTIES PREFIX "" VERSION 4.0.0 SOVERSION 4)
+set_target_properties(libyafaray4_bindings PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+set_target_properties(libyafaray4_bindings PROPERTIES CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN ON)
+target_include_directories(libyafaray4_bindings PRIVATE ${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR}/include)
+target_include_directories(libyafaray4_bindings INTERFACE $<INSTALL_INTERFACE:include>)
+target_link_libraries(libyafaray4_bindings PRIVATE LibYafaRay::libyafaray4)
 
-set(CMAKE_SHARED_LIBRARY_PREFIX "")
-#set(YAF_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/include ${CMAKE_SOURCE_DIR}/yafaray/core ${CMAKE_BINARY_DIR}/yafaray)
-set(YAF_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR} ${CMAKE_BINARY_DIR}/include)
-set(YAF_DEFINITIONS "-DBUILDING_LIBYAFARAY")
+add_subdirectory(common)
+add_subdirectory(public_api)
 
-# Code speedup due mathematical approximations
-if (FAST_MATH)
-    list(APPEND YAF_DEFINITIONS "-DFAST_MATH")
-endif (FAST_MATH)
+message_boolean("Building with XML loading support" YAFARAY_BINDINGS_WITH_XML "yes" "no")
+if(YAFARAY_BINDINGS_WITH_XML)
+	find_package(LibYafaRay_Xml 4.0.0 REQUIRED)
+	list(APPEND YAFARAY_BINDINGS_CUSTOM_DEFINITIONS "YAFARAY_BINDINGS_WITH_XML")
+	target_link_libraries(libyafaray4_bindings PRIVATE LibYafaRay_Xml::libyafaray4_xml)
+endif()
 
-if (FAST_TRIG)
-    list(APPEND YAF_DEFINITIONS "-DFAST_TRIG")
-endif (FAST_TRIG)
+message_boolean("Building with Gui support" YAFARAY_BINDINGS_WITH_XML "yes" "no")
+if(YAFARAY_BINDINGS_WITH_GUI)
+	find_package(LibYafaRay_Gui 4.0.0 REQUIRED)
+	list(APPEND YAFARAY_BINDINGS_CUSTOM_DEFINITIONS "YAFARAY_BINDINGS_WITH_GUI")
+	target_link_libraries(libyafaray4_bindings PRIVATE LibYafaRay_Gui::libyafaray4_gui)
+endif()
 
-if(WITH_MINGW_STD_THREADS AND WIN32 AND MINGW)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${MINGW_STD_THREADS_INCLUDE_DIR})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_MINGW_STD_THREADS")
-endif(WITH_MINGW_STD_THREADS AND WIN32 AND MINGW)
+message_boolean("Build with Python language bindings" YAFARAY_BINDINGS_WITH_PYTHON "yes" "no")
+if(YAFARAY_BINDINGS_WITH_PYTHON)
+	add_subdirectory(bindings_python)
+endif()
 
-if(WITH_OpenEXR)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${OPENEXR_INCLUDE_DIRS})
-    list(APPEND YAF_DEPS_LIB_DIRS ${OPENEXR_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_OPENEXR")
-endif(WITH_OpenEXR)
+message_boolean("Build with Ruby language bindings" YAFARAY_BINDINGS_WITH_RUBY "yes" "no")
+if(YAFARAY_BINDINGS_WITH_RUBY)
+	add_subdirectory(bindings_ruby)
+endif()
 
-if(WITH_JPEG)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${JPEG_INCLUDE_DIR})
-    list(APPEND YAF_DEPS_LIB_DIRS ${JPEG_LIBRARY})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_JPEG")
-endif(WITH_JPEG)
+target_include_directories(libyafaray4_bindings SYSTEM BEFORE PRIVATE ${YAF_BINDINGS_DEPS_INCLUDE_DIRS})
 
-if(WITH_PNG)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${PNG_INCLUDE_DIR})
-    list(APPEND YAF_DEPS_LIB_DIRS ${PNG_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_PNG")
-endif(WITH_PNG)
+target_compile_definitions(libyafaray4_bindings
+		PRIVATE
+		"${YAFARAY_BINDINGS_CUSTOM_DEFINITIONS}"
+		"YAFARAY_BINDINGS_BUILD_TYPE=\"$<UPPER_CASE:$<CONFIG>>\""
+		"YAFARAY_BINDINGS_BUILD_FLAGS=\"${CMAKE_CXX_FLAGS} $<$<CONFIG:Debug>:${CMAKE_CXX_FLAGS_DEBUG}>$<$<CONFIG:Release>:${CMAKE_CXX_FLAGS_RELEASE}>$<$<CONFIG:RelWithDebInfo>:${CMAKE_CXX_FLAGS_RELWITHDEBINFO}>$<$<CONFIG:MinSizeRel>:${CMAKE_CXX_FLAGS_MINSIZEREL}>\"")
 
-if(WITH_TIFF)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${TIFF_INCLUDE_DIR})
-    list(APPEND YAF_DEPS_LIB_DIRS ${TIFF_LIBRARY})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_TIFF")
-endif(WITH_TIFF)
+# Custom linker options
+if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang"))
+	target_link_options(libyafaray4_bindings PRIVATE
+			"LINKER:SHELL:--no-undefined"
+			"LINKER:SHELL:--version-script=${PROJECT_SOURCE_DIR}/include/public_api/yafaray_bindings_c_api_symbols.map" # Custom symbols export and versioning map
+			"$<$<CONFIG:RELEASE>:LINKER:SHELL:-s>" # Strip in release builds
+			)
+endif()
 
-if(WITH_OpenCV)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
-    list(APPEND YAF_DEPS_LIB_DIRS ${OpenCV_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_OPENCV")
-endif(WITH_OpenCV)
+# Copy C API include files to binary directory for other targets to use
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include)
+configure_file(${PROJECT_SOURCE_DIR}/include/public_api/yafaray_bindings_c_api.h ${PROJECT_BINARY_DIR}/include/)
 
-if(WITH_Boost)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${Boost_INCLUDE_DIR})
-    list(APPEND YAF_DEPS_LIB_DIRS ${Boost_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_BOOST")
-endif(WITH_Boost)
+# Shared target used for generating export header for both the shared and static targets
+include(GenerateExportHeader)
+generate_export_header(libyafaray4_bindings BASE_NAME yafaray_bindings_c_api)
+generate_export_header(libyafaray4_bindings BASE_NAME yafaray_bindings_c_api EXPORT_FILE_NAME ${PROJECT_BINARY_DIR}/include/yafaray_bindings_c_api_export.h)
 
-if(WITH_Freetype)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIRS})
-    list(APPEND YAF_DEPS_LIB_DIRS ${FREETYPE_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_FREETYPE")
-endif(WITH_Freetype)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${PROJECT_BINARY_DIR}/cmake/LibYafaRay_BindingsConfigVersion.cmake
+		COMPATIBILITY "AnyNewerVersion"
+		)
 
-if(WITH_XMLImport)
-    list(APPEND YAF_DEPS_INCLUDE_DIRS ${LIBXML2_INCLUDE_DIR})
-    list(APPEND YAF_DEPS_LIB_DIRS ${LIBXML2_LIBRARIES})
-    list(APPEND YAF_DEFINITIONS "-DHAVE_XML_IMPORT")
-endif(WITH_XMLImport)
+install(TARGETS libyafaray4_bindings
+		EXPORT LibYafaRay_Bindings
+		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		)
 
-# Generating config headers
-include(${CMAKE_SOURCE_DIR}/CMakeConfig/GenConfHeaders.txt)
+install(FILES
+		${PROJECT_SOURCE_DIR}/include/public_api/yafaray_bindings_c_api.h
+		${PROJECT_BINARY_DIR}/include/yafaray_bindings_c_api_export.h
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+		)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/accelerator SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/background SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/color SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/common SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/camera SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/export SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/geometry SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/image SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/format SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/import SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/integrator SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/integrator/surface SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/integrator/volume SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/interface SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/light SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/material SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/math SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/output SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/photon SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/render SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/sampler SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/scene/yafaray SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/scene SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/shader SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/texture SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/volume SOURCES_SUBDIR)
-list(APPEND SOURCES_DIR ${SOURCES_SUBDIR})
+install(EXPORT LibYafaRay_Bindings
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/LibYafaRay_Bindings
+		NAMESPACE LibYafaRay_Bindings::
+		FILE LibYafaRay_BindingsConfig.cmake
+		)
 
-
-add_library(libyafaray4 SHARED ${SOURCES_DIR})
-target_compile_definitions(libyafaray4 PRIVATE ${YAF_DEFINITIONS})
-target_include_directories(libyafaray4 PRIVATE ${YAF_INCLUDE_DIRS})
-target_include_directories(libyafaray4 SYSTEM BEFORE PRIVATE ${YAF_DEPS_INCLUDE_DIRS})
-target_link_libraries(libyafaray4 PRIVATE ${YAF_DEPS_LIB_DIRS})
-install(TARGETS libyafaray4 DESTINATION)
-
-if(WITH_XML_LOADER)
-	add_subdirectory(loader_xml)
-endif(WITH_XML_LOADER)
-
-if(WITH_QT)
-	add_subdirectory(gui)
-endif(WITH_QT)
-
-add_subdirectory(bindings)
+install(FILES
+		${PROJECT_BINARY_DIR}/cmake/LibYafaRay_BindingsConfigVersion.cmake
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/LibYafaRay_Bindings
+		)
