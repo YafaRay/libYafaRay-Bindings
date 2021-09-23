@@ -19,4 +19,5 @@
 target_sources(libyafaray4_bindings
 	PRIVATE
 		version_build_info.cc
+		images_collection.cc
 )

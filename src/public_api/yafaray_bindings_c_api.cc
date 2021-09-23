@@ -18,6 +18,11 @@
 
 #include "public_api/yafaray_bindings_c_api.h"
 #include "common/version_build_info.h"
+#ifdef YAFARAY_BINDINGS_WITH_PYTHON
+#include "bindings_python/libyafaray_python.h"
+#include "bindings_python/tile.h"
+#endif //YAFARAY_BINDINGS_WITH_PYTHON
+
 #include <cstring>
 
 int yafaray_bindings_getVersionMajor() { return yafaray_bindings::buildinfo::getVersionMajor(); }
@@ -41,3 +46,27 @@ void yafaray_bindings_deallocateCharPointer(char *string_pointer_to_deallocate)
 {
 	delete[] string_pointer_to_deallocate;
 }
+
+#ifdef YAFARAY_BINDINGS_WITH_PYTHON
+PyObject *PyInit_libyafaray4_bindings()
+{
+	//Preparing python multi-thread API for proper GIL management. If this is not done weird crashes happen when calling python callbacks from multiple C/C++ threads
+	Py_Initialize();
+	PyEval_InitThreads();
+
+	PyObject *py_module_object;
+	if(PyType_Ready(&yafaray_bindings::python::YafaRayInterface_Type) < 0) return nullptr;
+	if(PyType_Ready(&yafaray_bindings::python_tile_type_global) < 0) return nullptr;
+	py_module_object = PyModule_Create(&yafaray_bindings::python::yafaray_module);
+	Py_INCREF(&yafaray_bindings::python::YafaRayInterface_Type);
+	Py_INCREF(&yafaray_bindings::python_tile_type_global);
+	if(PyModule_AddObject(py_module_object, "Interface", reinterpret_cast<PyObject *>(&yafaray_bindings::python::YafaRayInterface_Type)) < 0)
+	{
+		Py_DECREF(&yafaray_bindings::python_tile_type_global);
+		Py_DECREF(&yafaray_bindings::python::YafaRayInterface_Type);
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	return py_module_object;
+}
+#endif //YAFARAY_BINDINGS_WITH_PYTHON

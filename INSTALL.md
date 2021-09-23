@@ -9,6 +9,6 @@ Dependencies:
   * Optional, depending on options selected in CMake:
     * \>=libYafaRay-Xml-4.0
     * \>=libYafaRay-Bindings-4.0
-    * \>=python-3.4
+    * \>=python-3.3
     * \>=ruby-2.0
 

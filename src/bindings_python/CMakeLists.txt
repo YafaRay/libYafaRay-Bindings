@@ -18,5 +18,6 @@
 
 target_sources(libyafaray4_bindings
 	PRIVATE
-
+		libyafaray_python.cc
+		tile.cc
 )

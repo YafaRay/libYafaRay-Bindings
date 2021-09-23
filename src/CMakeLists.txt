@@ -25,9 +25,12 @@ endif()
 
 message_boolean("Build with Python language bindings" YAFARAY_BINDINGS_WITH_PYTHON "yes" "no")
 if(YAFARAY_BINDINGS_WITH_PYTHON)
-	find_package(Python REQUIRED)
-	if(PYTHON_LIBRARIES)
-		message("Python ${REQUIRED_PYTHON_VERSION} found at: ${PYTHON_LIBRARIES}")
+	set(temporary_variable ${CMAKE_FIND_ROOT_PATH_MODE_PROGRAM}) #FIXME!
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY) #FIXME!
+	find_package(Python 3.4 REQUIRED COMPONENTS Development)
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY ${temporary_variable}) #FIXME!
+	if(Python_FOUND)
+		#list(APPEND YAFARAY_BINDINGS_CUSTOM_DEFINITIONS "YAFARAY_BINDINGS_WITH_PYTHON" "Py_LIMITED_API=0x03030000") #Py_LIMITED_API for Python >=3.3 ABI compatibility https://docs.python.org/3/c-api/stable.html https://www.python.org/dev/peps/pep-0384/ FIXME: unfortunately Py_LIMITED_API is causing problems to create custom types, so I have had to remove it, keeping this as a comment for future reference only
 		list(APPEND YAFARAY_BINDINGS_CUSTOM_DEFINITIONS "YAFARAY_BINDINGS_WITH_PYTHON")
 		target_link_libraries(libyafaray4_bindings PRIVATE Python::Python)
 		add_subdirectory(bindings_python)
@@ -38,7 +41,10 @@ endif()
 
 message_boolean("Build with Ruby language bindings" YAFARAY_BINDINGS_WITH_RUBY "yes" "no")
 if(YAFARAY_BINDINGS_WITH_RUBY)
-	find_package(Ruby 1.8 REQUIRED)
+	set(temporary_variable ${CMAKE_FIND_ROOT_PATH_MODE_PROGRAM}) #FIXME!
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY) #FIXME!
+	find_package(Ruby 2.0 REQUIRED)
+	set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY ${temporary_variable}) #FIXME!
 	if(SWIG_FOUND AND RUBY_FOUND)
 		message("Ruby version found: ${RUBY_VERSION}")
 		message("Ruby headers at: ${RUBY_INCLUDE_DIR}")
@@ -47,7 +53,7 @@ if(YAFARAY_BINDINGS_WITH_RUBY)
 		target_link_libraries(libyafaray4_bindings PRIVATE Ruby)
 		add_subdirectory(bindings_ruby)
 	else()
-		message("Ruby wasn't found, please install it to build python bindings")
+		message("Ruby wasn't found, please install it to build ruby bindings")
 	endif()
 endif()
 

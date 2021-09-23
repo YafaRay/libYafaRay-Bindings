@@ -7,6 +7,7 @@ LIBYAFARAYBINDINGS_4.0.0 {
         yafaray_bindings_getVersionPatch;
         yafaray_bindings_getVersionString;
         yafaray_bindings_deallocateCharPointer;
+        PyInit_libyafaray4_bindings;
 
     local:
         *;

@@ -20,7 +20,10 @@
 #define YAFARAY_BINDINGS_C_API_H
 
 #include "yafaray_bindings_c_api_export.h"
-#include <yafaray_c_api.h>
+#ifdef YAFARAY_BINDINGS_WITH_PYTHON
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#endif //YAFARAY_BINDINGS_WITH_PYTHON
 
 #define YAFARAY_BINDINGS_C_API_VERSION_MAJOR 4
 
@@ -34,6 +37,9 @@ extern "C" {
 	/* The following functions return a text string where memory is allocated by libYafaRay itself. Do not free the char* directly with free, use "yafaray_bindings_deallocateCharPointer" to free them instead to ensure proper deallocation. */
 	YAFARAY_BINDINGS_C_API_EXPORT char *yafaray_bindings_getVersionString();
 	YAFARAY_BINDINGS_C_API_EXPORT void yafaray_bindings_deallocateCharPointer(char *string_pointer_to_deallocate);
+#ifdef YAFARAY_BINDINGS_WITH_PYTHON
+	YAFARAY_BINDINGS_C_API_EXPORT PyObject* PyInit_libyafaray4_bindings(void);
+#endif //YAFARAY_BINDINGS_WITH_PYTHON
 
 #ifdef __cplusplus
 }
