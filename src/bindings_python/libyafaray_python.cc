@@ -39,10 +39,32 @@ PyObject *createInterface(PyTypeObject *type, PyObject *args, PyObject *kwds)
 	auto *self = reinterpret_cast<YafaRayInterface *>(type->tp_alloc(type, 0));
 	if(self)
 	{
-		const char *xml_file_path = nullptr;
-		if(!PyArg_ParseTuple(args, "|s", &xml_file_path)) Py_RETURN_FALSE;
-		if(xml_file_path) self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_EXPORT_XML, xml_file_path, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
-		else self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_FOR_RENDERING, nullptr, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		const char *exported_file_path = nullptr;
+		if(!PyArg_ParseTuple(args, "|s", &exported_file_path)) Py_RETURN_FALSE;
+		std::string file_path;
+		std::string file_extension;
+		if(exported_file_path)
+		{
+			file_path = exported_file_path;
+			const size_t extension_dot_position = file_path.find_last_of('.');
+			file_extension = file_path.substr(extension_dot_position + 1, file_path.size() - (extension_dot_position + 1));
+		}
+		if(file_extension == "xml")
+		{
+			self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_EXPORT_XML, exported_file_path, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		}
+		else if(file_extension == "c")
+		{
+			self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_EXPORT_C, exported_file_path, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		}
+		else if(file_extension == "py")
+		{
+			self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_EXPORT_PYTHON, exported_file_path, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		}
+		else
+		{
+			self->interf_ = yafaray_createInterface(YAFARAY_INTERFACE_FOR_RENDERING, nullptr, nullptr, nullptr, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		}
 	}
 	return reinterpret_cast<PyObject *>(self);
 }
