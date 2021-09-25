@@ -45,6 +45,8 @@ struct YafaRayInterface
 	PyObject_HEAD
 	yafaray_Interface_t *interf_ = nullptr;
 	ImagesCollection *images_collection_ = nullptr;
+	int border_start_x_ = 0;
+	int border_start_y_ = 0;
 	PyObject *python_logging_callback_ = nullptr;
 	PyObject *python_notify_view_callback_ = nullptr;
 	PyObject *python_notify_layer_callback_ = nullptr;

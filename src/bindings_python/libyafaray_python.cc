@@ -508,6 +508,10 @@ void YafaRayInterface::flushAreaCallback(const char *view_name, int area_id, int
 		auto layers_and_channels = yi->images_collection_->getLayersAndExportedChannels();
 		PyObject *tiles = PyTuple_New(layers_and_channels.size());
 		int idx = 0;
+		x_0 -= yi->border_start_x_;
+		y_0 -= yi->border_start_y_;
+		x_1 -= yi->border_start_x_;
+		y_1 -= yi->border_start_y_;
 		for(const auto &layer : layers_and_channels)
 		{
 			Tile *tile = PyObject_New(Tile, &python_tile_type_global);
@@ -585,6 +589,10 @@ void YafaRayInterface::highlightAreaCallback(const char *view_name, int area_id,
 		auto layers_and_channels = yi->images_collection_->getLayersAndExportedChannels();
 		PyObject *tiles = PyTuple_New(layers_and_channels.size());
 		int idx = 0;
+		x_0 -= yi->border_start_x_;
+		y_0 -= yi->border_start_y_;
+		x_1 -= yi->border_start_x_;
+		y_1 -= yi->border_start_y_;
 		for(const auto &layer : layers_and_channels)
 		{
 			Tile *tile = PyObject_New(Tile, &python_tile_type_global);
@@ -759,7 +767,7 @@ void YafaRayInterface::monitorCallback(int steps_total, int steps_done, const ch
 PyObject *render(YafaRayInterface *self, PyObject *args)
 {
 	PyObject *callback = nullptr;
-	if(PyArg_ParseTuple(args, "|O:monitorCallback", &callback))
+	if(PyArg_ParseTuple(args, "ii|O:monitorCallback", &self->border_start_x_, &self->border_start_y_, &callback))
 	{
 		const int w = yafaray_getSceneFilmWidth(self->interf_);
 		const int h = yafaray_getSceneFilmHeight(self->interf_);

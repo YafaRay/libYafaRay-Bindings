@@ -231,7 +231,7 @@ yi.paramsClearAll()
 def monitorCallback(steps_total, steps_done, tag):
     print("*PYTHON MONITOR CALLBACK*", steps_total, steps_done, tag)
 
-yi.render(monitorCallback)
+yi.render(0, 0, monitorCallback)
 #yi.guiCreateRenderWidget(1000, 600)
 
 #yi.xmlParseFile("/home/david/yafa/src/libYafaRay-Xml/tests/test01/test01.xml")
