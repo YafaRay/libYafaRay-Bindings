@@ -297,7 +297,7 @@ PyObject *paramsSetMatrix(YafaRayInterface *self, PyObject *args)
 						 &matrix[3][0], &matrix[3][1], &matrix[3][2], &matrix[3][3],
 						 &transpose
 	)) Py_RETURN_FALSE;
-	yafaray_paramsSetMatrix(self->interf_, str, reinterpret_cast<const float *>(matrix), static_cast<yafaray_bool_t>(transpose));
+	yafaray_paramsSetMatrix(self->interf_, str, matrix, static_cast<yafaray_bool_t>(transpose));
 	Py_RETURN_NONE;
 }
 
