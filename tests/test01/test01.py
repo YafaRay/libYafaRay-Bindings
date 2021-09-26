@@ -167,8 +167,8 @@ def notifyViewCallback(view_name):
 
 yi.setRenderNotifyViewCallback(notifyViewCallback)
 
-def notifyLayerCallback(layer_name, weight, height, layer_exported_channels):
-    print("*PYTHON NOTIFY LAYER CALLBACK*", layer_name, weight, height, layer_exported_channels)
+def notifyLayerCallback(layer_name, width, height, layer_exported_channels):
+    print("*PYTHON NOTIFY LAYER CALLBACK*", layer_name, width, height, layer_exported_channels)
 
 yi.setRenderNotifyLayerCallback(notifyLayerCallback)
 
