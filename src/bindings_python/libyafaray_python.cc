@@ -228,7 +228,7 @@ PyObject *addInstance(YafaRayInterface *self, PyObject *args)
 					&obj_to_world[2][0], &obj_to_world[2][1], &obj_to_world[2][2], &obj_to_world[2][3],
 					&obj_to_world[3][0], &obj_to_world[3][1], &obj_to_world[3][2], &obj_to_world[3][3]
 					)) Py_RETURN_FALSE;
-	yafaray_addInstance(self->interf_, str, obj_to_world);
+	yafaray_addInstanceArray(self->interf_, str, obj_to_world);
 	Py_RETURN_NONE;
 }
 
@@ -297,7 +297,7 @@ PyObject *paramsSetMatrix(YafaRayInterface *self, PyObject *args)
 						 &matrix[3][0], &matrix[3][1], &matrix[3][2], &matrix[3][3],
 						 &transpose
 	)) Py_RETURN_FALSE;
-	yafaray_paramsSetMatrix(self->interf_, str, matrix, static_cast<yafaray_bool_t>(transpose));
+	yafaray_paramsSetMatrixArray(self->interf_, str, matrix, static_cast<yafaray_bool_t>(transpose));
 	Py_RETURN_NONE;
 }
 
