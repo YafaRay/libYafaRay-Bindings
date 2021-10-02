@@ -120,7 +120,6 @@ PyObject *clearAll(YafaRayInterface *self, PyObject *);
 PyObject *setupRender(YafaRayInterface *self, PyObject *);
 PyObject *render(YafaRayInterface *self, PyObject *args);
 PyObject *defineLayer(YafaRayInterface *self, PyObject *);
-PyObject *setInteractive(YafaRayInterface *self, PyObject *args);
 PyObject *enablePrintDateTime(YafaRayInterface *self, PyObject *args);
 PyObject *setConsoleVerbosityLevel(YafaRayInterface *self, PyObject *args);
 PyObject *setLogVerbosityLevel(YafaRayInterface *self, PyObject *args);
@@ -192,7 +191,6 @@ static PyMethodDef yafaray_methods[] = {
 		{"setupRender", reinterpret_cast<PyCFunction>(setupRender), METH_NOARGS, ""},
 		{"render", reinterpret_cast<PyCFunction>(render), METH_VARARGS, ""},
 		{"defineLayer", reinterpret_cast<PyCFunction>(defineLayer), METH_NOARGS, ""},
-		{"setInteractive", reinterpret_cast<PyCFunction>(setInteractive), METH_VARARGS, ""},
 		{"enablePrintDateTime", reinterpret_cast<PyCFunction>(enablePrintDateTime), METH_VARARGS, ""},
 		{"setConsoleVerbosityLevel", reinterpret_cast<PyCFunction>(setConsoleVerbosityLevel), METH_VARARGS, ""},
 		{"setLogVerbosityLevel", reinterpret_cast<PyCFunction>(setLogVerbosityLevel), METH_VARARGS, ""},

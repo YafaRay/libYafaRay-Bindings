@@ -36,7 +36,6 @@ result_image_height = 400
 yi.paramsSetString("type", "yafaray")
 yi.createScene()
 yi.paramsClearAll()
-yi.setInteractive(1)
 
 # Creating image from RAM or file #
 tex_width = 200

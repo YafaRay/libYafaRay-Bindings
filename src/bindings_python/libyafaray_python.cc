@@ -808,14 +808,6 @@ PyObject *defineLayer(YafaRayInterface *self, PyObject *)
 	Py_RETURN_NONE;
 }
 
-PyObject *setInteractive(YafaRayInterface *self, PyObject *args)
-{
-	int interactive;
-	if(!PyArg_ParseTuple(args, "p", &interactive)) Py_RETURN_FALSE;
-	yafaray_setInteractive(self->interf_, static_cast<yafaray_bool_t>(interactive));
-	Py_RETURN_NONE;
-}
-
 PyObject *enablePrintDateTime(YafaRayInterface *self, PyObject *args)
 {
 	int enable_print_date_time;
