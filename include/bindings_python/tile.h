@@ -55,28 +55,27 @@ static PySequenceMethods sequence_methods =
 	( ssizeargfunc ) pythonTileSubscriptInt_global
 };
 
-static PyTypeObject python_tile_type_global =
-{
-	PyVarObject_HEAD_INIT(nullptr, 0)
-	"yaf_tile",						/* tp_name */
-	sizeof(Tile),									/* tp_basicsize */
-	0,									/* tp_itemsize */
-	( destructor ) pythonTileDelete_global,			/* tp_dealloc */
-	0,								/* tp_print / tp_vectorcall_offset */
-	nullptr,								/* getattrfunc tp_getattr; */
-	nullptr,								/* setattrfunc tp_setattr; */
-	nullptr,								/* tp_compare */ /* DEPRECATED in python 3.0! */
-	nullptr,								/* tp_repr */
-	nullptr,								/* PyNumberMethods *tp_as_number; */
-	&sequence_methods,								/* PySequenceMethods *tp_as_sequence; */
-	nullptr,							/* PyMappingMethods *tp_as_mapping; */
-	nullptr,							/* hashfunc tp_hash; */
-	nullptr,								/* ternaryfunc tp_call; */
-	nullptr,									/* reprfunc tp_str; */
-	nullptr,									/* getattrofunc tp_getattro; */
-	nullptr,								/* setattrofunc tp_setattro; */
-	nullptr,								/* PyBufferProcs *tp_as_buffer; */
-	Py_TPFLAGS_DEFAULT,					/* long tp_flags; */
+static PyTypeObject python_tile_type_global = {
+		PyVarObject_HEAD_INIT(nullptr, 0)
+		"yaf_tile", /* tp_name */
+		sizeof(Tile), /* tp_basicsize */
+		0, /* tp_itemsize */
+		( destructor ) pythonTileDelete_global, /* tp_dealloc */
+		0, /* tp_print / tp_vectorcall_offset */
+		nullptr, /* getattrfunc tp_getattr; */
+		nullptr, /* setattrfunc tp_setattr; */
+		nullptr, /* tp_as_async */
+		nullptr, /* tp_repr */
+		nullptr, /* PyNumberMethods *tp_as_number; */
+		&sequence_methods, /* PySequenceMethods *tp_as_sequence; */
+		nullptr, /* PyMappingMethods *tp_as_mapping; */
+		nullptr, /* hashfunc tp_hash; */
+		nullptr, /* ternaryfunc tp_call; */
+		nullptr, /* reprfunc tp_str; */
+		nullptr, /* getattrofunc tp_getattro; */
+		nullptr, /* setattrofunc tp_setattro; */
+		nullptr, /* PyBufferProcs *tp_as_buffer; */
+		Py_TPFLAGS_DEFAULT, /* long tp_flags; */
 };
 
 END_YAFARAY_BINDINGS
