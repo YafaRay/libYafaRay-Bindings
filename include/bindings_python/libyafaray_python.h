@@ -222,7 +222,7 @@ static PyTypeObject YafaRayInterface_Type = {
 		sizeof(YafaRayInterface),             /* tp_basicsize */
 		0,                                    /* tp_itemsize */
 		reinterpret_cast<destructor>(destroyInterface),        /* tp_dealloc */
-		nullptr,                              /* tp_vectorcall_offset */
+		0,                              /* tp_print / tp_vectorcall_offset */
 		nullptr,                              /* tp_getattr */
 		nullptr,                              /* tp_setattr */
 		nullptr,                              /* tp_as_async */

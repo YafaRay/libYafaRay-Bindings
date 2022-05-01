@@ -62,7 +62,7 @@ static PyTypeObject python_tile_type_global =
 	sizeof(Tile),									/* tp_basicsize */
 	0,									/* tp_itemsize */
 	( destructor ) pythonTileDelete_global,			/* tp_dealloc */
-	nullptr,								/* tp_print / tp_vectorcall_offset */
+	0,								/* tp_print / tp_vectorcall_offset */
 	nullptr,								/* getattrfunc tp_getattr; */
 	nullptr,								/* setattrfunc tp_setattr; */
 	nullptr,								/* tp_compare */ /* DEPRECATED in python 3.0! */
