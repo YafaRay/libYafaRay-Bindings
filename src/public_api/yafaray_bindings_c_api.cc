@@ -52,7 +52,9 @@ PyObject *PyInit_libyafaray4_bindings()
 {
 	//Preparing python multi-thread API for proper GIL management. If this is not done weird crashes happen when calling python callbacks from multiple C/C++ threads
 	Py_Initialize();
-	PyEval_InitThreads();
+#if PY_VERSION_HEX < 0x03090000
+	PyEval_InitThreads(); //Creates GIL if it does not exist. Deprecated and does nothing starting from Python 3.9. Will be removed in Python 3.11.
+#endif
 
 	PyObject *py_module_object;
 	if(PyType_Ready(&yafaray_bindings::python::YafaRayInterface_Type) < 0) return nullptr;
