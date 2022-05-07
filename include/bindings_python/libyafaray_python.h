@@ -83,6 +83,8 @@ PyObject *addVertexWithOrco(YafaRayInterface *self, PyObject *args);
 PyObject *addNormal(YafaRayInterface *self, PyObject *args);
 PyObject *addTriangle(YafaRayInterface *self, PyObject *args);
 PyObject *addTriangleWithUv(YafaRayInterface *self, PyObject *args);
+PyObject *addQuad(YafaRayInterface *self, PyObject *args);
+PyObject *addQuadWithUv(YafaRayInterface *self, PyObject *args);
 PyObject *addUv(YafaRayInterface *self, PyObject *args);
 PyObject *smoothMesh(YafaRayInterface *self, PyObject *args);
 PyObject *addInstance(YafaRayInterface *self, PyObject *args);
@@ -154,6 +156,8 @@ static PyMethodDef yafaray_methods[] = {
 		{"addNormal", reinterpret_cast<PyCFunction>(addNormal), METH_VARARGS, ""},
 		{"addTriangle", reinterpret_cast<PyCFunction>(addTriangle), METH_VARARGS, ""},
 		{"addTriangleWithUv", reinterpret_cast<PyCFunction>(addTriangleWithUv), METH_VARARGS, ""},
+		{"addQuad", reinterpret_cast<PyCFunction>(addQuad), METH_VARARGS, ""},
+		{"addQuadWithUv", reinterpret_cast<PyCFunction>(addQuadWithUv), METH_VARARGS, ""},
 		{"addUv", reinterpret_cast<PyCFunction>(addUv), METH_VARARGS, ""},
 		{"smoothMesh", reinterpret_cast<PyCFunction>(smoothMesh), METH_VARARGS, ""},
 		{"addInstance", reinterpret_cast<PyCFunction>(addInstance), METH_VARARGS, ""},

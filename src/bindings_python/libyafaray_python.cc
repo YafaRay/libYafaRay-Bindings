@@ -202,6 +202,22 @@ PyObject *addTriangleWithUv(YafaRayInterface *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
+PyObject *addQuad(YafaRayInterface *self, PyObject *args)
+{
+	int a, b, c, d;
+	if(!PyArg_ParseTuple(args, "iiii", &a, &b, &c, &d)) Py_RETURN_FALSE;
+	yafaray_addQuad(self->interf_, a, b, c, d);
+	Py_RETURN_NONE;
+}
+
+PyObject *addQuadWithUv(YafaRayInterface *self, PyObject *args)
+{
+	int a, b, c, d, uv_a, uv_b, uv_c, uv_d;
+	if(!PyArg_ParseTuple(args, "iiiiiiii", &a, &b, &c, &d, &uv_a, &uv_b, &uv_c, &uv_d)) Py_RETURN_FALSE;
+	yafaray_addQuadWithUv(self->interf_, a, b, c, d, uv_a, uv_b, uv_c, uv_d);
+	Py_RETURN_NONE;
+}
+
 PyObject *addUv(YafaRayInterface *self, PyObject *args)
 {
 	float u, v;
