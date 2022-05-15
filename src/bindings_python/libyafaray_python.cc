@@ -165,27 +165,51 @@ PyObject *endObject(YafaRayInterface *self, PyObject *)
 PyObject *addVertex(YafaRayInterface *self, PyObject *args)
 {
 	float x, y, z;
+	if(!PyArg_ParseTuple(args, "fff", &x, &y, &z)) Py_RETURN_FALSE;
+	yafaray_addVertex(self->interf_, x, y, z);
+	Py_RETURN_NONE;
+}
+
+PyObject *addVertexTimeStep(YafaRayInterface *self, PyObject *args)
+{
+	float x, y, z;
 	int time_step;
 	if(!PyArg_ParseTuple(args, "fffi", &x, &y, &z, &time_step)) Py_RETURN_FALSE;
-	yafaray_addVertex(self->interf_, x, y, z, time_step);
+	yafaray_addVertexTimeStep(self->interf_, x, y, z, time_step);
 	Py_RETURN_NONE;
 }
 
 PyObject *addVertexWithOrco(YafaRayInterface *self, PyObject *args)
 {
 	float x, y, z, ox, oy, oz;
+	if(!PyArg_ParseTuple(args, "ffffff", &x, &y, &z, &ox, &oy, &oz)) Py_RETURN_FALSE;
+	yafaray_addVertexWithOrco(self->interf_, x, y, z, ox, oy, oz);
+	Py_RETURN_NONE;
+}
+
+PyObject *addVertexWithOrcoTimeStep(YafaRayInterface *self, PyObject *args)
+{
+	float x, y, z, ox, oy, oz;
 	int time_step;
 	if(!PyArg_ParseTuple(args, "ffffffi", &x, &y, &z, &ox, &oy, &oz, &time_step)) Py_RETURN_FALSE;
-	yafaray_addVertexWithOrco(self->interf_, x, y, z, ox, oy, oz, time_step);
+	yafaray_addVertexWithOrcoTimeStep(self->interf_, x, y, z, ox, oy, oz, time_step);
 	Py_RETURN_NONE;
 }
 
 PyObject *addNormal(YafaRayInterface *self, PyObject *args)
 {
 	float x, y, z;
+	if(!PyArg_ParseTuple(args, "fff", &x, &y, &z)) Py_RETURN_FALSE;
+	yafaray_addNormal(self->interf_, x, y, z);
+	Py_RETURN_NONE;
+}
+
+PyObject *addNormalTimeStep(YafaRayInterface *self, PyObject *args)
+{
+	float x, y, z;
 	int time_step;
-	if(!PyArg_ParseTuple(args, "fff", &x, &y, &z, &time_step)) Py_RETURN_FALSE;
-	yafaray_addNormal(self->interf_, x, y, z, time_step);
+	if(!PyArg_ParseTuple(args, "fffi", &x, &y, &z, &time_step)) Py_RETURN_FALSE;
+	yafaray_addNormalTimeStep(self->interf_, x, y, z, time_step);
 	Py_RETURN_NONE;
 }
 

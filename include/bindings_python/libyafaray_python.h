@@ -79,8 +79,11 @@ PyObject *endGeometry(YafaRayInterface *self, PyObject *);
 PyObject *getNextFreeId(YafaRayInterface *self, PyObject *);
 PyObject *endObject(YafaRayInterface *self, PyObject *);
 PyObject *addVertex(YafaRayInterface *self, PyObject *args);
+PyObject *addVertexTimeStep(YafaRayInterface *self, PyObject *args);
 PyObject *addVertexWithOrco(YafaRayInterface *self, PyObject *args);
+PyObject *addVertexWithOrcoTimeStep(YafaRayInterface *self, PyObject *args);
 PyObject *addNormal(YafaRayInterface *self, PyObject *args);
+PyObject *addNormalTimeStep(YafaRayInterface *self, PyObject *args);
 PyObject *addTriangle(YafaRayInterface *self, PyObject *args);
 PyObject *addTriangleWithUv(YafaRayInterface *self, PyObject *args);
 PyObject *addQuad(YafaRayInterface *self, PyObject *args);
@@ -152,8 +155,11 @@ static PyMethodDef yafaray_methods[] = {
 		{"getNextFreeId", reinterpret_cast<PyCFunction>(getNextFreeId), METH_NOARGS, ""},
 		{"endObject", reinterpret_cast<PyCFunction>(endObject), METH_NOARGS, ""},
 		{"addVertex", reinterpret_cast<PyCFunction>(addVertex), METH_VARARGS, ""},
+		{"addVertexTimeStep", reinterpret_cast<PyCFunction>(addVertexTimeStep), METH_VARARGS, ""},
 		{"addVertexWithOrco", reinterpret_cast<PyCFunction>(addVertexWithOrco), METH_VARARGS, ""},
+		{"addVertexWithOrcoTimeStep", reinterpret_cast<PyCFunction>(addVertexWithOrcoTimeStep), METH_VARARGS, ""},
 		{"addNormal", reinterpret_cast<PyCFunction>(addNormal), METH_VARARGS, ""},
+		{"addNormalTimeStep", reinterpret_cast<PyCFunction>(addNormalTimeStep), METH_VARARGS, ""},
 		{"addTriangle", reinterpret_cast<PyCFunction>(addTriangle), METH_VARARGS, ""},
 		{"addTriangleWithUv", reinterpret_cast<PyCFunction>(addTriangleWithUv), METH_VARARGS, ""},
 		{"addQuad", reinterpret_cast<PyCFunction>(addQuad), METH_VARARGS, ""},
