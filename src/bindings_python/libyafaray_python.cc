@@ -261,17 +261,42 @@ PyObject *smoothMesh(YafaRayInterface *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-PyObject *addInstance(YafaRayInterface *self, PyObject *args)
+PyObject *createInstance(YafaRayInterface *self, PyObject *)
 {
-	const char *str;
+	return PyLong_FromLong(yafaray_createInstance(self->interf_));
+}
+
+PyObject *addInstanceObject(YafaRayInterface *self, PyObject *args)
+{
+	unsigned int instance_id;
+	const char *base_object_name;
+	if(!PyArg_ParseTuple(args, "Is", &instance_id, &base_object_name)) Py_RETURN_FALSE;
+	yafaray_addInstanceObject(self->interf_, instance_id, base_object_name);
+	Py_RETURN_NONE;
+}
+
+PyObject *addInstanceOfInstance(YafaRayInterface *self, PyObject *args)
+{
+	unsigned int instance_id;
+	unsigned int base_instance_id;
+	if(!PyArg_ParseTuple(args, "II", &instance_id, &base_instance_id)) Py_RETURN_FALSE;
+	yafaray_addInstanceOfInstance(self->interf_, instance_id, base_instance_id);
+	Py_RETURN_NONE;
+}
+
+PyObject *addInstanceMatrix(YafaRayInterface *self, PyObject *args)
+{
+	unsigned int instance_id;
 	float obj_to_world[4][4];
-	if(!PyArg_ParseTuple(args, "sffffffffffffffff", &str,
-					&obj_to_world[0][0], &obj_to_world[0][1], &obj_to_world[0][2], &obj_to_world[0][3],
-					&obj_to_world[1][0], &obj_to_world[1][1], &obj_to_world[1][2], &obj_to_world[1][3],
-					&obj_to_world[2][0], &obj_to_world[2][1], &obj_to_world[2][2], &obj_to_world[2][3],
-					&obj_to_world[3][0], &obj_to_world[3][1], &obj_to_world[3][2], &obj_to_world[3][3]
-					)) Py_RETURN_FALSE;
-	yafaray_addInstanceArray(self->interf_, str, obj_to_world);
+	float time;
+	if(!PyArg_ParseTuple(args, "Ifffffffffffffffff", &instance_id,
+		&obj_to_world[0][0], &obj_to_world[0][1], &obj_to_world[0][2], &obj_to_world[0][3],
+		&obj_to_world[1][0], &obj_to_world[1][1], &obj_to_world[1][2], &obj_to_world[1][3],
+		&obj_to_world[2][0], &obj_to_world[2][1], &obj_to_world[2][2], &obj_to_world[2][3],
+		&obj_to_world[3][0], &obj_to_world[3][1], &obj_to_world[3][2], &obj_to_world[3][3],
+		&time
+	)) Py_RETURN_FALSE;
+	yafaray_addInstanceMatrixArray(self->interf_, instance_id, reinterpret_cast<const float *>(obj_to_world), time);
 	Py_RETURN_NONE;
 }
 
@@ -340,7 +365,7 @@ PyObject *paramsSetMatrix(YafaRayInterface *self, PyObject *args)
 						 &matrix[3][0], &matrix[3][1], &matrix[3][2], &matrix[3][3],
 						 &transpose
 	)) Py_RETURN_FALSE;
-	yafaray_paramsSetMatrixArray(self->interf_, str, matrix, static_cast<yafaray_bool_t>(transpose));
+	yafaray_paramsSetMatrixArray(self->interf_, str, reinterpret_cast<const float *>(matrix), static_cast<yafaray_bool_t>(transpose));
 	Py_RETURN_NONE;
 }
 

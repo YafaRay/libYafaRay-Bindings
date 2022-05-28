@@ -90,7 +90,10 @@ PyObject *addQuad(YafaRayInterface *self, PyObject *args);
 PyObject *addQuadWithUv(YafaRayInterface *self, PyObject *args);
 PyObject *addUv(YafaRayInterface *self, PyObject *args);
 PyObject *smoothMesh(YafaRayInterface *self, PyObject *args);
-PyObject *addInstance(YafaRayInterface *self, PyObject *args);
+PyObject *createInstance(YafaRayInterface *self, PyObject *);
+PyObject *addInstanceObject(YafaRayInterface *self, PyObject *args);
+PyObject *addInstanceOfInstance(YafaRayInterface *self, PyObject *args);
+PyObject *addInstanceMatrix(YafaRayInterface *self, PyObject *args);
 PyObject *paramsSetVector(YafaRayInterface *self, PyObject *args);
 PyObject *paramsSetString(YafaRayInterface *self, PyObject *args);
 PyObject *paramsSetBool(YafaRayInterface *self, PyObject *args);
@@ -166,7 +169,10 @@ static PyMethodDef yafaray_methods[] = {
 		{"addQuadWithUv", reinterpret_cast<PyCFunction>(addQuadWithUv), METH_VARARGS, ""},
 		{"addUv", reinterpret_cast<PyCFunction>(addUv), METH_VARARGS, ""},
 		{"smoothMesh", reinterpret_cast<PyCFunction>(smoothMesh), METH_VARARGS, ""},
-		{"addInstance", reinterpret_cast<PyCFunction>(addInstance), METH_VARARGS, ""},
+		{"createInstance", reinterpret_cast<PyCFunction>(createInstance), METH_NOARGS, ""},
+		{"addInstanceObject", reinterpret_cast<PyCFunction>(addInstanceObject), METH_VARARGS, ""},
+		{"addInstanceOfInstance", reinterpret_cast<PyCFunction>(addInstanceOfInstance), METH_VARARGS, ""},
+		{"addInstanceMatrix", reinterpret_cast<PyCFunction>(addInstanceMatrix), METH_VARARGS, ""},
 		{"paramsSetVector", reinterpret_cast<PyCFunction>(paramsSetVector), METH_VARARGS, ""},
 		{"paramsSetString", reinterpret_cast<PyCFunction>(paramsSetString), METH_VARARGS, ""},
 		{"paramsSetBool", reinterpret_cast<PyCFunction>(paramsSetBool), METH_VARARGS, ""},
