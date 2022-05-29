@@ -263,7 +263,7 @@ PyObject *smoothMesh(YafaRayInterface *self, PyObject *args)
 
 PyObject *createInstance(YafaRayInterface *self, PyObject *)
 {
-	return PyLong_FromLong(yafaray_createInstance(self->interf_));
+	return PyLong_FromUnsignedLong(yafaray_createInstance(self->interf_));
 }
 
 PyObject *addInstanceObject(YafaRayInterface *self, PyObject *args)
