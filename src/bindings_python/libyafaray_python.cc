@@ -263,33 +263,33 @@ PyObject *smoothMesh(YafaRayInterface *self, PyObject *args)
 
 PyObject *createInstance(YafaRayInterface *self, PyObject *)
 {
-	return PyLong_FromUnsignedLong(yafaray_createInstance(self->interf_));
+	return PyLong_FromLong(yafaray_createInstance(self->interf_));
 }
 
 PyObject *addInstanceObject(YafaRayInterface *self, PyObject *args)
 {
-	unsigned int instance_id;
+	int instance_id;
 	const char *base_object_name;
-	if(!PyArg_ParseTuple(args, "Is", &instance_id, &base_object_name)) Py_RETURN_FALSE;
+	if(!PyArg_ParseTuple(args, "is", &instance_id, &base_object_name)) Py_RETURN_FALSE;
 	yafaray_addInstanceObject(self->interf_, instance_id, base_object_name);
 	Py_RETURN_NONE;
 }
 
 PyObject *addInstanceOfInstance(YafaRayInterface *self, PyObject *args)
 {
-	unsigned int instance_id;
-	unsigned int base_instance_id;
-	if(!PyArg_ParseTuple(args, "II", &instance_id, &base_instance_id)) Py_RETURN_FALSE;
+	int instance_id;
+	int base_instance_id;
+	if(!PyArg_ParseTuple(args, "ii", &instance_id, &base_instance_id)) Py_RETURN_FALSE;
 	yafaray_addInstanceOfInstance(self->interf_, instance_id, base_instance_id);
 	Py_RETURN_NONE;
 }
 
 PyObject *addInstanceMatrix(YafaRayInterface *self, PyObject *args)
 {
-	unsigned int instance_id;
+	int instance_id;
 	float obj_to_world[4][4];
 	float time;
-	if(!PyArg_ParseTuple(args, "Ifffffffffffffffff", &instance_id,
+	if(!PyArg_ParseTuple(args, "ifffffffffffffffff", &instance_id,
 		&obj_to_world[0][0], &obj_to_world[0][1], &obj_to_world[0][2], &obj_to_world[0][3],
 		&obj_to_world[1][0], &obj_to_world[1][1], &obj_to_world[1][2], &obj_to_world[1][3],
 		&obj_to_world[2][0], &obj_to_world[2][1], &obj_to_world[2][2], &obj_to_world[2][3],
