@@ -26,6 +26,10 @@
 #include "common/images_collection.h"
 #include <yafaray_c_api.h>
 #define PY_SSIZE_T_CLEAN
+#ifdef _WIN64
+#define _hypot hypot
+#include <cmath>
+#endif
 #include <Python.h>
 
 BEGIN_YAFARAY_BINDINGS

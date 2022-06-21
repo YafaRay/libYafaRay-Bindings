@@ -22,6 +22,10 @@
 #include "yafaray_bindings_c_api_export.h"
 #ifdef YAFARAY_BINDINGS_WITH_PYTHON
 #define PY_SSIZE_T_CLEAN
+#ifdef _WIN64
+#define _hypot hypot
+#include <cmath>
+#endif
 #include <Python.h>
 #endif //YAFARAY_BINDINGS_WITH_PYTHON
 
