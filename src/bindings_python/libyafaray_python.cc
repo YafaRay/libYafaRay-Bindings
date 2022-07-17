@@ -435,19 +435,21 @@ PyObject *createCamera(YafaRayInterface *self, PyObject *args)
 	Py_RETURN_NONE;
 }
 
-PyObject *createBackground(YafaRayInterface *self, PyObject *args)
+PyObject *defineBackground(YafaRayInterface *self, PyObject *)
 {
-	const char *str;
-	if(!PyArg_ParseTuple(args, "s", &str)) Py_RETURN_FALSE;
-	yafaray_createBackground(self->interf_, str);
+	yafaray_defineBackground(self->interf_);
 	Py_RETURN_NONE;
 }
 
-PyObject *createIntegrator(YafaRayInterface *self, PyObject *args)
+PyObject *defineSurfaceIntegrator(YafaRayInterface *self, PyObject *)
 {
-	const char *str;
-	if(!PyArg_ParseTuple(args, "s", &str)) Py_RETURN_FALSE;
-	yafaray_createIntegrator(self->interf_, str);
+	yafaray_defineSurfaceIntegrator(self->interf_);
+	Py_RETURN_NONE;
+}
+
+PyObject *defineVolumeIntegrator(YafaRayInterface *self, PyObject *)
+{
+	yafaray_defineVolumeIntegrator(self->interf_);
 	Py_RETURN_NONE;
 }
 
