@@ -137,7 +137,7 @@ yi.paramsClearAll()
 # Creating scene background #
 yi.paramsSetString("type", "constant")
 yi.paramsSetColor("color", 1, 1, 1, 1)
-yi.createBackground("world_background")
+yi.defineBackground()
 yi.paramsClearAll()
 
 # Creating camera #
@@ -201,19 +201,16 @@ yi.setRenderHighlightPixelCallback(highlightPixelCallback)
 
 # Creating surface integrator #
 yi.paramsSetString("type", "photonmapping")
-yi.createIntegrator("surfintegr")
+yi.defineSurfaceIntegrator()
 yi.paramsClearAll()
 
 # Creating volume integrator #
 yi.paramsSetString("type", "none")
-yi.createIntegrator("volintegr")
+yi.defineVolumeIntegrator()
 yi.paramsClearAll()
 
 # Setting up render parameters #
-yi.paramsSetString("integrator_name", "surfintegr")
-yi.paramsSetString("volintegrator_name", "volintegr")
 yi.paramsSetString("scene_accelerator", "yafaray-kdtree-original")
-yi.paramsSetString("background_name", "world_background")
 yi.paramsSetInt("width", result_image_width)
 yi.paramsSetInt("height", result_image_height)
 # yi.paramsSetInt("AA_minsamples",  50)

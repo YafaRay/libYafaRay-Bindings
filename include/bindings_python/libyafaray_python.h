@@ -114,8 +114,9 @@ PyObject *createLight(YafaRayInterface *self, PyObject *args);
 PyObject *createTexture(YafaRayInterface *self, PyObject *args);
 PyObject *createMaterial(YafaRayInterface *self, PyObject *args);
 PyObject *createCamera(YafaRayInterface *self, PyObject *args);
-PyObject *createBackground(YafaRayInterface *self, PyObject *args);
-PyObject *createIntegrator(YafaRayInterface *self, PyObject *args);
+PyObject *defineBackground(YafaRayInterface *self, PyObject *);
+PyObject *defineSurfaceIntegrator(YafaRayInterface *self, PyObject *);
+PyObject *defineVolumeIntegrator(YafaRayInterface *self, PyObject *);
 PyObject *createVolumeRegion(YafaRayInterface *self, PyObject *args);
 PyObject *createRenderView(YafaRayInterface *self, PyObject *args);
 PyObject *createOutput(YafaRayInterface *self, PyObject *args);
@@ -193,8 +194,9 @@ static PyMethodDef yafaray_methods[] = {
 		{"createTexture", reinterpret_cast<PyCFunction>(createTexture), METH_VARARGS, ""},
 		{"createMaterial", reinterpret_cast<PyCFunction>(createMaterial), METH_VARARGS, ""},
 		{"createCamera", reinterpret_cast<PyCFunction>(createCamera), METH_VARARGS, ""},
-		{"createBackground", reinterpret_cast<PyCFunction>(createBackground), METH_VARARGS, ""},
-		{"createIntegrator", reinterpret_cast<PyCFunction>(createIntegrator), METH_VARARGS, ""},
+		{"defineBackground", reinterpret_cast<PyCFunction>(defineBackground), METH_NOARGS, ""},
+		{"defineSurfaceIntegrator", reinterpret_cast<PyCFunction>(defineSurfaceIntegrator), METH_NOARGS, ""},
+		{"defineVolumeIntegrator", reinterpret_cast<PyCFunction>(defineVolumeIntegrator), METH_NOARGS, ""},
 		{"createVolumeRegion", reinterpret_cast<PyCFunction>(createVolumeRegion), METH_VARARGS, ""},
 		{"createRenderView", reinterpret_cast<PyCFunction>(createRenderView), METH_VARARGS, ""},
 		{"createOutput", reinterpret_cast<PyCFunction>(createOutput), METH_VARARGS, ""},
