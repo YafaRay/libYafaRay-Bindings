@@ -40,7 +40,7 @@ extern "C" {
 	YAFARAY_BINDINGS_C_API_EXPORT int yafaray_bindings_getVersionPatch();
 	/* The following functions return a text string where memory is allocated by libYafaRay itself. Do not free the char* directly with free, use "yafaray_bindings_deallocateCharPointer" to free them instead to ensure proper deallocation. */
 	YAFARAY_BINDINGS_C_API_EXPORT char *yafaray_bindings_getVersionString();
-	YAFARAY_BINDINGS_C_API_EXPORT void yafaray_bindings_deallocateCharPointer(char *string_pointer_to_deallocate);
+	YAFARAY_BINDINGS_C_API_EXPORT void yafaray_bindings_destroyCharString(char *string);
 #ifdef YAFARAY_BINDINGS_WITH_PYTHON
 	YAFARAY_BINDINGS_C_API_EXPORT PyObject* PyInit_libyafaray4_bindings(void);
 #endif //YAFARAY_BINDINGS_WITH_PYTHON

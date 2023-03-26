@@ -18,6 +18,12 @@
 
 target_sources(libyafaray4_bindings
 	PRIVATE
-		libyafaray_python.cc
+		common.cc
+		logger.cc
+		scene.cc
+		renderer.cc
+		film.cc
+		param_map.cc
+		param_map_list.cc
 		tile.cc
 )

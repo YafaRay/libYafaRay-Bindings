@@ -1,5 +1,6 @@
 #pragma once
 /****************************************************************************
+ *
  *      This is part of the libYafaRay-Bindings package
  *
  *      This library is free software; you can redistribute it and/or
@@ -15,12 +16,30 @@
  *      You should have received a copy of the GNU Lesser General Public
  *      License along with this library; if not, write to the Free Software
  *      Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
  */
 
-#ifndef YAFARAY_BINDINGS_COMMON_H
-#define YAFARAY_BINDINGS_COMMON_H
+#ifndef LIBYAFARAY_BINDINGS_COMMON_H
+#define LIBYAFARAY_BINDINGS_COMMON_H
 
-#define BEGIN_YAFARAY_BINDINGS namespace yafaray_bindings {
-#define END_YAFARAY_BINDINGS }
+#define PY_SSIZE_T_CLEAN
+#ifdef _WIN64
+#define _hypot hypot
+#endif
+#include <Python.h>
 
-#endif /* YAFARAY_BINDINGS_COMMON_H */
+namespace yafaray_bindings::python
+{
+static struct PyModuleDef yafaray_module {
+		PyModuleDef_HEAD_INIT,
+		"yafaray", /* name of module */
+		"libYafaRay Python Bindings", /* module documentation, may be NULL */
+		-1, /* size of per-interpreter state of the module, or -1 if the module keeps state in global variables. */
+		//python_public_methods
+};
+
+PyObject *setCallback(PyObject *&callback, PyObject *python_callback);
+
+} // namespace yafaray_bindings::python
+
+#endif //LIBYAFARAY_BINDINGS_COMMON_H

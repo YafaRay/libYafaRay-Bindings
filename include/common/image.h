@@ -20,11 +20,11 @@
 #ifndef LIBYAFARAY_GUI_IMAGE_H
 #define LIBYAFARAY_GUI_IMAGE_H
 
-#include "common/yafaray_bindings_common.h"
 #include <vector>
 #include <cmath>
 
-BEGIN_YAFARAY_BINDINGS
+namespace yafaray_bindings
+{
 
 class RgbaFloat
 {
@@ -83,6 +83,6 @@ inline RgbaFloat Image::getColor(int x, int y) const
 	else return {};
 }
 
-END_YAFARAY_BINDINGS
+} // namespace yafaray_bindings
 
 #endif //LIBYAFARAY_GUI_IMAGE_H

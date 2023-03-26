@@ -36,7 +36,7 @@ astyle -r --mode=c --style=allman --indent-classes --indent=tab --keep-one-line-
 * Try using templating for generic functions as long as it does not cause performance problems
 * Do NOT use defines as a replacement for Enums!
 * Avoid global Enums as much as possible. Embed them within classes.
-* Avoid using directly Enums as simple global labels for simple variables of type int, etc. Use Enum class (name) : (type), and provide any variable using enums with the Enum class name, and provide methods to handle operators like &, etc.
+* Avoid using directly Enums as simple global labels for simple variables of type int, etc. Use Enum class (name) : (type), and provide any variable using enums with the Enum class name, and provide py_methods_ to handle operators like &, etc.
 * Avoid passing too many parameters to functions, if needed create a new Class or Struct and pass it.
 * Always try to add const (or better constexpr) to everything unless it really needs to change its internal state.
 * Always try to pass parameters by reference (&) unless it's a plain old data ("POD") like bool, float, int, etc.

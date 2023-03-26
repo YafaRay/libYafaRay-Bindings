@@ -20,12 +20,12 @@
 #ifndef LIBYAFARAY_GUI_IMAGES_COLLECTION_H
 #define LIBYAFARAY_GUI_IMAGES_COLLECTION_H
 
-#include "common/yafaray_bindings_common.h"
 #include <string>
 #include <map>
 #include <memory>
 
-BEGIN_YAFARAY_BINDINGS
+namespace yafaray_bindings
+{
 
 class RgbaFloat;
 class Image;
@@ -34,28 +34,25 @@ class ImagesCollection final
 {
 	public:
 		ImagesCollection(int width, int height) : images_width_(width), images_height_(height) { }
-		int getWidth() const { return images_width_; }
-		int getHeight() const { return images_height_; }
-		void setColor(const std::string &view_name, const std::string &layer_name, int x, int y, const RgbaFloat &rgba);
-		RgbaFloat getColor(const std::string &view_name, const std::string &layer_name, int x, int y) const;
-		int getExportedChannels(const std::string &layer_name) const;
-		std::string getExportedLayerName(const std::string &layer_name) const;
-		const std::map<std::string, int> &getLayersAndExportedChannels() const { return layers_exported_channels_; };
-		std::map<std::string, std::shared_ptr<Image>> *findView(const std::string &view_name);
-		const std::map<std::string, std::shared_ptr<Image>> *findView(const std::string &view_name) const;
-		Image *findLayer(const std::string &view_name, const std::string &layer_name);
-		const Image *findLayer(const std::string &view_name, const std::string &layer_name) const;
+		[[nodiscard]] int getWidth() const { return images_width_; }
+		[[nodiscard]] int getHeight() const { return images_height_; }
+		void setColor(const std::string &layer_name, int x, int y, const RgbaFloat &rgba);
+		[[nodiscard]] RgbaFloat getColor(const std::string &layer_name, int x, int y) const;
+		[[nodiscard]] int getExportedChannels(const std::string &layer_name) const;
+		[[nodiscard]] std::string getExportedLayerName(const std::string &layer_name) const;
+		[[nodiscard]] const std::map<std::string, int> &getLayersAndExportedChannels() const { return layers_exported_channels_; };
+		[[nodiscard]] Image *findLayer(const std::string &layer_name);
+		[[nodiscard]] const Image *findLayer(const std::string &layer_name) const;
 		void clear();
-		void defineView(const std::string &view_name);
 		void defineLayer(const std::string &internal_layer_name, const std::string &exported_layer_name, int width, int height, int channels_exported);
 	private:
 		int images_width_ = 0;
 		int images_height_ = 0;
-		std::map<std::string, std::map<std::string, std::shared_ptr<Image>>> images_;
+		std::map<std::string, std::shared_ptr<Image>> images_;
 		std::map<std::string, int> layers_exported_channels_;
 		std::map<std::string, std::string> dict_internal_exported_layers_;
 };
 
-END_YAFARAY_BINDINGS
+} // namespace yafaray_bindings
 
 #endif //LIBYAFARAY_GUI_IMAGES_COLLECTION_H

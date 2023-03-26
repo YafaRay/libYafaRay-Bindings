@@ -19,15 +19,21 @@
 #include "public_api/yafaray_bindings_c_api.h"
 #include "common/version_build_info.h"
 #ifdef YAFARAY_BINDINGS_WITH_PYTHON
-#include "bindings_python/libyafaray_python.h"
+#include "bindings_python/common.h"
+#include "bindings_python/logger.h"
+#include "bindings_python/param_map.h"
+#include "bindings_python/param_map_list.h"
+#include "bindings_python/scene.h"
+#include "bindings_python/renderer.h"
+#include "bindings_python/film.h"
 #include "bindings_python/tile.h"
 #endif //YAFARAY_BINDINGS_WITH_PYTHON
 
 #include <cstring>
 
-int yafaray_bindings_getVersionMajor() { return yafaray_bindings::buildinfo::getVersionMajor(); }
-int yafaray_bindings_getVersionMinor() { return yafaray_bindings::buildinfo::getVersionMinor(); }
-int yafaray_bindings_getVersionPatch() { return yafaray_bindings::buildinfo::getVersionPatch(); }
+int yafaray_bindings_getVersionMajor() { return yafaray_bindings::build_info::getVersionMajor(); }
+int yafaray_bindings_getVersionMinor() { return yafaray_bindings::build_info::getVersionMinor(); }
+int yafaray_bindings_getVersionPatch() { return yafaray_bindings::build_info::getVersionPatch(); }
 
 char *createCString(const std::string &std_string)
 {
@@ -39,12 +45,12 @@ char *createCString(const std::string &std_string)
 
 char *yafaray_bindings_getVersionString()
 {
-	return createCString(yafaray_bindings::buildinfo::getVersionString());
+	return createCString(yafaray_bindings::build_info::getVersionString());
 }
 
-void yafaray_bindings_deallocateCharPointer(char *string_pointer_to_deallocate)
+void yafaray_bindings_destroyCharString(char *string)
 {
-	delete[] string_pointer_to_deallocate;
+	delete[] string;
 }
 
 #ifdef YAFARAY_BINDINGS_WITH_PYTHON
@@ -56,16 +62,57 @@ PyObject *PyInit_libyafaray4_bindings()
 	PyEval_InitThreads(); //Creates GIL if it does not exist. Deprecated and does nothing starting from Python 3.9. Will be removed in Python 3.11.
 #endif
 
-	PyObject *py_module_object;
-	if(PyType_Ready(&yafaray_bindings::python::YafaRayInterface_Type) < 0) return nullptr;
-	if(PyType_Ready(&yafaray_bindings::python_tile_type_global) < 0) return nullptr;
-	py_module_object = PyModule_Create(&yafaray_bindings::python::yafaray_module);
-	Py_INCREF(&yafaray_bindings::python::YafaRayInterface_Type);
-	Py_INCREF(&yafaray_bindings::python_tile_type_global);
-	if(PyModule_AddObject(py_module_object, "Interface", reinterpret_cast<PyObject *>(&yafaray_bindings::python::YafaRayInterface_Type)) < 0)
+	if(PyType_Ready(yafaray_bindings::python::Logger::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::ParamMap::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::ParamMapList::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::Scene::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::Renderer::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::Film::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::Tile::getType()) < 0) return nullptr;
+
+	Py_INCREF(yafaray_bindings::python::Logger::getType());
+	Py_INCREF(yafaray_bindings::python::ParamMap::getType());
+	Py_INCREF(yafaray_bindings::python::ParamMapList::getType());
+	Py_INCREF(yafaray_bindings::python::Scene::getType());
+	Py_INCREF(yafaray_bindings::python::Renderer::getType());
+	Py_INCREF(yafaray_bindings::python::Film::getType());
+	Py_INCREF(yafaray_bindings::python::Tile::getType());
+
+	PyObject *py_module_object = PyModule_Create(&yafaray_bindings::python::yafaray_module);
+	if(PyModule_AddObject(py_module_object, "Logger", reinterpret_cast<PyObject *>(yafaray_bindings::python::Logger::getType())) < 0)
 	{
-		Py_DECREF(&yafaray_bindings::python_tile_type_global);
-		Py_DECREF(&yafaray_bindings::python::YafaRayInterface_Type);
+		Py_DECREF(yafaray_bindings::python::Logger::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "ParamMap", reinterpret_cast<PyObject *>(yafaray_bindings::python::ParamMap::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::ParamMap::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "ParamMapList", reinterpret_cast<PyObject *>(yafaray_bindings::python::ParamMapList::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::ParamMapList::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "Scene", reinterpret_cast<PyObject *>(yafaray_bindings::python::Scene::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::Scene::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "Renderer", reinterpret_cast<PyObject *>(yafaray_bindings::python::Renderer::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::Renderer::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "Film", reinterpret_cast<PyObject *>(yafaray_bindings::python::Film::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::Tile::getType());
+		Py_DECREF(yafaray_bindings::python::Film::getType());
 		Py_DECREF(py_module_object);
 		return nullptr;
 	}

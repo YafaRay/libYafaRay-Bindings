@@ -22,13 +22,10 @@
 #ifndef YAFARAY_BINDINGS_VERSION_BUILD_INFO_H
 #define YAFARAY_BINDINGS_VERSION_BUILD_INFO_H
 
-#include "yafaray_bindings_common.h"
 #include <string>
 #include <vector>
 
-BEGIN_YAFARAY_BINDINGS
-
-namespace buildinfo
+namespace yafaray_bindings::build_info
 {
 	std::string getVersionString();
 	std::string getVersionDescription();
@@ -54,8 +51,6 @@ namespace buildinfo
 	std::string getBuildOptions();
 	std::string getBuildFlags();
 	std::vector<std::string> getAllBuildDetails();
-}
-
-END_YAFARAY_BINDINGS
+} // namespace yafaray_bindings
 
 #endif //YAFARAY_BINDINGS_VERSION_BUILD_INFO_H

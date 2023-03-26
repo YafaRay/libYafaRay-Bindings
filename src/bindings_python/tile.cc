@@ -20,9 +20,40 @@
 
 #include "bindings_python/tile.h"
 
-BEGIN_YAFARAY_BINDINGS
+namespace yafaray_bindings::python
+{
+PySequenceMethods Tile::sequence_methods_{
+		(lenfunc) size,
+		nullptr,
+		nullptr,
+		(ssizeargfunc) subscriptInt
+};
 
-Py_ssize_t pythonTileSize_global(const Tile *tile)
+PyTypeObject Tile::py_type_{
+		PyVarObject_HEAD_INIT(nullptr, 0)
+		"yaf_tile", /* tp_name */
+		sizeof(Tile), /* tp_basicsize */
+		0, /* tp_itemsize */
+		(destructor) destroy, /* tp_dealloc */
+		0, /* tp_print / tp_vectorcall_offset */
+		nullptr, /* getattrfunc tp_getattr; */
+		nullptr, /* setattrfunc tp_setattr; */
+		nullptr, /* tp_as_async */
+		nullptr, /* tp_repr */
+		nullptr, /* PyNumberMethods *tp_as_number; */
+		&sequence_methods_, /* PySequenceMethods *tp_as_sequence; */
+		nullptr, /* PyMappingMethods *tp_as_mapping; */
+		nullptr, /* hashfunc tp_hash; */
+		nullptr, /* ternaryfunc tp_call; */
+		nullptr, /* reprfunc tp_str; */
+		nullptr, /* getattrofunc tp_getattro; */
+		nullptr, /* setattrofunc tp_setattro; */
+		nullptr, /* PyBufferProcs *tp_as_buffer; */
+		Py_TPFLAGS_DEFAULT, /* long tp_flags; */
+};
+
+
+Py_ssize_t Tile::size(const Tile *tile)
 {
 	const int area_w = (tile->area_x_1_ - tile->area_x_0_);
 	const int area_h = (tile->area_y_1_ - tile->area_y_0_);
@@ -30,11 +61,11 @@ Py_ssize_t pythonTileSize_global(const Tile *tile)
 	return area_w * area_h;
 }
 
-PyObject *pythonTileSubscriptInt_global(const Tile *tile, int py_index)
+PyObject *Tile::subscriptInt(const Tile *tile, int py_index)
 {
 	const int num_channels = tile->exported_channels_;
 	// Check boundaries and fill w and h
-	if(py_index >= pythonTileSize_global(tile) || py_index < 0)
+	if(py_index >= size(tile) || py_index < 0)
 	{
 		PyObject* groupPix = PyTuple_New(num_channels);
 		for(int i = 0; i < num_channels; ++i)
@@ -75,7 +106,7 @@ PyObject *pythonTileSubscriptInt_global(const Tile *tile, int py_index)
 	return groupPix;
 }
 
-void pythonTileDelete_global(Tile *tile)
+void Tile::destroy(Tile *tile)
 {
 	PyObject_Del(tile);
 }
@@ -137,4 +168,4 @@ void Tile::drawCorner(int x, int y, int border_length, CornerPosition corner_pos
 	}
 }
 
-END_YAFARAY_BINDINGS
+} // namespace yafaray_bindings::python
