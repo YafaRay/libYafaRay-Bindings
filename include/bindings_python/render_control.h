@@ -19,39 +19,33 @@
  *
  */
 
-#ifndef LIBYAFARAY_BINDINGS_RENDERER_H
-#define LIBYAFARAY_BINDINGS_RENDERER_H
+#ifndef LIBYAFARAY_BINDINGS_RENDER_CONTROL_H
+#define LIBYAFARAY_BINDINGS_RENDER_CONTROL_H
 
 #include "common.h"
 
-typedef struct yafaray_Renderer yafaray_Renderer;
+typedef struct yafaray_RenderControl yafaray_RenderControl;
 
 namespace yafaray_bindings::python
 {
-class Renderer final // NOLINT(cppcoreguidelines-pro-type-member-init)
+class RenderControl final // NOLINT(cppcoreguidelines-pro-type-member-init)
 {
 	public:
-		[[nodiscard]] yafaray_Renderer *get() { return renderer_; }
-		[[nodiscard]] const yafaray_Renderer *get() const { return renderer_; }
+		[[nodiscard]] yafaray_RenderControl *get() { return render_control_; }
+		[[nodiscard]] const yafaray_RenderControl *get() const { return render_control_; }
 		[[nodiscard]] static PyTypeObject *getType() { return &py_type_; }
 
 	private:
 		[[nodiscard]] static PyObject *create(PyTypeObject *type, PyObject *args, PyObject *);
-		[[nodiscard]] static PyObject *destroy(Renderer *self);
-		[[nodiscard]] static PyObject *defineSurfaceIntegrator(Renderer *self, PyObject *args);
-		[[nodiscard]] static PyObject *defineVolumeIntegrator(Renderer *self, PyObject *args);
-		[[nodiscard]] static PyObject *setup(Renderer *self, PyObject *args);
-		[[nodiscard]] static PyObject *render(Renderer *self, PyObject *args);
-		[[nodiscard]] static PyObject *cancel(Renderer *self, PyObject *args);
-		static void monitorCallback(int steps_total, int steps_done, const char *tag, void *callback_user_data);
+		[[nodiscard]] static PyObject *destroy(RenderControl *self);
+		[[nodiscard]] static PyObject *cancel(RenderControl *self, PyObject *args);
 
 		PyObject_HEAD
-		yafaray_Renderer *renderer_ = nullptr;
-		PyObject *monitor_callback_ = nullptr;
+		yafaray_RenderControl *render_control_ = nullptr;
 		static PyMethodDef py_methods_[];
 		static PyTypeObject py_type_;
 };
 
 } // namespace yafaray_bindings::python
 
-#endif //LIBYAFARAY_BINDINGS_RENDERER_H
+#endif //LIBYAFARAY_BINDINGS_RENDER_CONTROL_H

@@ -24,8 +24,10 @@
 #include "bindings_python/param_map.h"
 #include "bindings_python/param_map_list.h"
 #include "bindings_python/scene.h"
-#include "bindings_python/renderer.h"
+#include "bindings_python/surface_integrator.h"
 #include "bindings_python/film.h"
+#include "bindings_python/render_control.h"
+#include "bindings_python/render_monitor.h"
 #include "bindings_python/tile.h"
 #endif //YAFARAY_BINDINGS_WITH_PYTHON
 
@@ -66,16 +68,20 @@ PyObject *PyInit_libyafaray4_bindings()
 	if(PyType_Ready(yafaray_bindings::python::ParamMap::getType()) < 0) return nullptr;
 	if(PyType_Ready(yafaray_bindings::python::ParamMapList::getType()) < 0) return nullptr;
 	if(PyType_Ready(yafaray_bindings::python::Scene::getType()) < 0) return nullptr;
-	if(PyType_Ready(yafaray_bindings::python::Renderer::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::SurfaceIntegrator::getType()) < 0) return nullptr;
 	if(PyType_Ready(yafaray_bindings::python::Film::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::RenderControl::getType()) < 0) return nullptr;
+	if(PyType_Ready(yafaray_bindings::python::RenderMonitor::getType()) < 0) return nullptr;
 	if(PyType_Ready(yafaray_bindings::python::Tile::getType()) < 0) return nullptr;
 
 	Py_INCREF(yafaray_bindings::python::Logger::getType());
 	Py_INCREF(yafaray_bindings::python::ParamMap::getType());
 	Py_INCREF(yafaray_bindings::python::ParamMapList::getType());
 	Py_INCREF(yafaray_bindings::python::Scene::getType());
-	Py_INCREF(yafaray_bindings::python::Renderer::getType());
+	Py_INCREF(yafaray_bindings::python::SurfaceIntegrator::getType());
 	Py_INCREF(yafaray_bindings::python::Film::getType());
+	Py_INCREF(yafaray_bindings::python::RenderControl::getType());
+	Py_INCREF(yafaray_bindings::python::RenderMonitor::getType());
 	Py_INCREF(yafaray_bindings::python::Tile::getType());
 
 	PyObject *py_module_object = PyModule_Create(&yafaray_bindings::python::yafaray_module);
@@ -103,9 +109,9 @@ PyObject *PyInit_libyafaray4_bindings()
 		Py_DECREF(py_module_object);
 		return nullptr;
 	}
-	if(PyModule_AddObject(py_module_object, "Renderer", reinterpret_cast<PyObject *>(yafaray_bindings::python::Renderer::getType())) < 0)
+	if(PyModule_AddObject(py_module_object, "SurfaceIntegrator", reinterpret_cast<PyObject *>(yafaray_bindings::python::SurfaceIntegrator::getType())) < 0)
 	{
-		Py_DECREF(yafaray_bindings::python::Renderer::getType());
+		Py_DECREF(yafaray_bindings::python::SurfaceIntegrator::getType());
 		Py_DECREF(py_module_object);
 		return nullptr;
 	}
@@ -113,6 +119,18 @@ PyObject *PyInit_libyafaray4_bindings()
 	{
 		Py_DECREF(yafaray_bindings::python::Tile::getType());
 		Py_DECREF(yafaray_bindings::python::Film::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "RenderControl", reinterpret_cast<PyObject *>(yafaray_bindings::python::RenderControl::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::RenderControl::getType());
+		Py_DECREF(py_module_object);
+		return nullptr;
+	}
+	if(PyModule_AddObject(py_module_object, "RenderMonitor", reinterpret_cast<PyObject *>(yafaray_bindings::python::RenderMonitor::getType())) < 0)
+	{
+		Py_DECREF(yafaray_bindings::python::RenderMonitor::getType());
 		Py_DECREF(py_module_object);
 		return nullptr;
 	}

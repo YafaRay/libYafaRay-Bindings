@@ -22,41 +22,43 @@
 #include "bindings_python/logger.h"
 #include "bindings_python/param_map.h"
 #include "bindings_python/param_map_list.h"
-#include <yafaray_c_api.h>
+#include "bindings_python/render_control.h"
 
 namespace yafaray_bindings::python
 {
 PyMethodDef Scene::py_methods_[]{
-		{"create",                    reinterpret_cast<PyCFunction>(Scene::create),                    METH_VARARGS, ""},
-		{"getObjectId",               reinterpret_cast<PyCFunction>(Scene::getObjectId),               METH_VARARGS, ""},
-		{"getMaterialId",             reinterpret_cast<PyCFunction>(Scene::getMaterialId),             METH_VARARGS, ""},
-		{"getImageId",                reinterpret_cast<PyCFunction>(Scene::getImageId),                METH_VARARGS, ""},
-		{"initObject",                reinterpret_cast<PyCFunction>(Scene::initObject),                METH_VARARGS, ""},
-		{"addVertex",                 reinterpret_cast<PyCFunction>(Scene::addVertex),                 METH_VARARGS, ""},
-		{"addVertexTimeStep",         reinterpret_cast<PyCFunction>(Scene::addVertexTimeStep),         METH_VARARGS, ""},
-		{"addVertexWithOrco",         reinterpret_cast<PyCFunction>(Scene::addVertexWithOrco),         METH_VARARGS, ""},
-		{"addVertexWithOrcoTimeStep", reinterpret_cast<PyCFunction>(Scene::addVertexWithOrcoTimeStep), METH_VARARGS, ""},
-		{"addNormal",                 reinterpret_cast<PyCFunction>(Scene::addNormal),                 METH_VARARGS, ""},
-		{"addNormalTimeStep",         reinterpret_cast<PyCFunction>(Scene::addNormalTimeStep),         METH_VARARGS, ""},
-		{"addTriangle",               reinterpret_cast<PyCFunction>(Scene::addTriangle),               METH_VARARGS, ""},
-		{"addTriangleWithUv",         reinterpret_cast<PyCFunction>(Scene::addTriangleWithUv),         METH_VARARGS, ""},
-		{"addQuad",                   reinterpret_cast<PyCFunction>(Scene::addQuad),                   METH_VARARGS, ""},
-		{"addQuadWithUv",             reinterpret_cast<PyCFunction>(Scene::addQuadWithUv),             METH_VARARGS, ""},
-		{"addUv",                     reinterpret_cast<PyCFunction>(Scene::addUv),                     METH_VARARGS, ""},
-		{"smoothObjectMesh",          reinterpret_cast<PyCFunction>(Scene::smoothObjectMesh),          METH_VARARGS, ""},
-		{"createInstance",            reinterpret_cast<PyCFunction>(Scene::createInstance),            METH_NOARGS,  ""},
-		{"addInstanceObject",         reinterpret_cast<PyCFunction>(Scene::addInstanceObject),         METH_VARARGS, ""},
-		{"addInstanceOfInstance",     reinterpret_cast<PyCFunction>(Scene::addInstanceOfInstance),     METH_VARARGS, ""},
-		{"addInstanceMatrix",         reinterpret_cast<PyCFunction>(Scene::addInstanceMatrix),         METH_VARARGS, ""},
-		{"createObject",              reinterpret_cast<PyCFunction>(Scene::createObject),              METH_VARARGS, ""},
-		{"createLight",               reinterpret_cast<PyCFunction>(Scene::createLight),               METH_VARARGS, ""},
-		{"createTexture",             reinterpret_cast<PyCFunction>(Scene::createTexture),             METH_VARARGS, ""},
-		{"createMaterial",            reinterpret_cast<PyCFunction>(Scene::createMaterial),            METH_VARARGS, ""},
-		{"defineBackground",          reinterpret_cast<PyCFunction>(Scene::defineBackground),          METH_VARARGS, ""},
-		{"createVolumeRegion",        reinterpret_cast<PyCFunction>(Scene::createVolumeRegion),        METH_VARARGS, ""},
-		{"createImage",               reinterpret_cast<PyCFunction>(Scene::createImage),               METH_VARARGS, ""},
-		{"setImageColor",             reinterpret_cast<PyCFunction>(Scene::setImageColor),             METH_VARARGS, ""},
-		{"getImageColor",             reinterpret_cast<PyCFunction>(Scene::getImageColor),             METH_VARARGS, ""},
+		{"create",                     reinterpret_cast<PyCFunction>(Scene::create),                     METH_VARARGS, ""},
+		{"getObjectId",                reinterpret_cast<PyCFunction>(Scene::getObjectId),                METH_VARARGS, ""},
+		{"getMaterialId",              reinterpret_cast<PyCFunction>(Scene::getMaterialId),              METH_VARARGS, ""},
+		{"getImageId",                 reinterpret_cast<PyCFunction>(Scene::getImageId),                 METH_VARARGS, ""},
+		{"initObject",                 reinterpret_cast<PyCFunction>(Scene::initObject),                 METH_VARARGS, ""},
+		{"addVertex",                  reinterpret_cast<PyCFunction>(Scene::addVertex),                  METH_VARARGS, ""},
+		{"addVertexTimeStep",          reinterpret_cast<PyCFunction>(Scene::addVertexTimeStep),          METH_VARARGS, ""},
+		{"addVertexWithOrco",          reinterpret_cast<PyCFunction>(Scene::addVertexWithOrco),          METH_VARARGS, ""},
+		{"addVertexWithOrcoTimeStep",  reinterpret_cast<PyCFunction>(Scene::addVertexWithOrcoTimeStep),  METH_VARARGS, ""},
+		{"addNormal",                  reinterpret_cast<PyCFunction>(Scene::addNormal),                  METH_VARARGS, ""},
+		{"addNormalTimeStep",          reinterpret_cast<PyCFunction>(Scene::addNormalTimeStep),          METH_VARARGS, ""},
+		{"addTriangle",                reinterpret_cast<PyCFunction>(Scene::addTriangle),                METH_VARARGS, ""},
+		{"addTriangleWithUv",          reinterpret_cast<PyCFunction>(Scene::addTriangleWithUv),          METH_VARARGS, ""},
+		{"addQuad",                    reinterpret_cast<PyCFunction>(Scene::addQuad),                    METH_VARARGS, ""},
+		{"addQuadWithUv",              reinterpret_cast<PyCFunction>(Scene::addQuadWithUv),              METH_VARARGS, ""},
+		{"addUv",                      reinterpret_cast<PyCFunction>(Scene::addUv),                      METH_VARARGS, ""},
+		{"smoothObjectMesh",           reinterpret_cast<PyCFunction>(Scene::smoothObjectMesh),           METH_VARARGS, ""},
+		{"createInstance",             reinterpret_cast<PyCFunction>(Scene::createInstance),             METH_NOARGS,  ""},
+		{"addInstanceObject",          reinterpret_cast<PyCFunction>(Scene::addInstanceObject),          METH_VARARGS, ""},
+		{"addInstanceOfInstance",      reinterpret_cast<PyCFunction>(Scene::addInstanceOfInstance),      METH_VARARGS, ""},
+		{"addInstanceMatrix",          reinterpret_cast<PyCFunction>(Scene::addInstanceMatrix),          METH_VARARGS, ""},
+		{"createObject",               reinterpret_cast<PyCFunction>(Scene::createObject),               METH_VARARGS, ""},
+		{"createLight",                reinterpret_cast<PyCFunction>(Scene::createLight),                METH_VARARGS, ""},
+		{"createTexture",              reinterpret_cast<PyCFunction>(Scene::createTexture),              METH_VARARGS, ""},
+		{"createMaterial",             reinterpret_cast<PyCFunction>(Scene::createMaterial),             METH_VARARGS, ""},
+		{"defineBackground",           reinterpret_cast<PyCFunction>(Scene::defineBackground),           METH_VARARGS, ""},
+		{"createVolumeRegion",         reinterpret_cast<PyCFunction>(Scene::createVolumeRegion),         METH_VARARGS, ""},
+		{"createImage",                reinterpret_cast<PyCFunction>(Scene::createImage),                METH_VARARGS, ""},
+		{"setImageColor",              reinterpret_cast<PyCFunction>(Scene::setImageColor),              METH_VARARGS, ""},
+		{"getImageColor",              reinterpret_cast<PyCFunction>(Scene::getImageColor),              METH_VARARGS, ""},
+		{"checkAndClearModifiedFlags", reinterpret_cast<PyCFunction>(Scene::checkAndClearModifiedFlags), METH_VARARGS, ""},
+		{"preprocess",                 reinterpret_cast<PyCFunction>(Scene::preprocess),                 METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 
@@ -400,6 +402,22 @@ PyObject *Scene::getImageColor(Scene *self, PyObject *args)
 	float r, g, b, a;
 	yafaray_getImageColor(self->scene_, image_id, x, y, &r, &g, &b, &a);
 	return Py_BuildValue("ffff", r, g, b, a);
+}
+
+PyObject *Scene::checkAndClearModifiedFlags(Scene *self, PyObject *args)
+{
+	const yafaray_SceneModifiedFlags scene_modified_flags{yafaray_checkAndClearSceneModifiedFlags(self->scene_)};
+	return PyLong_FromLong(scene_modified_flags);
+}
+
+PyObject *Scene::preprocess(Scene *self, PyObject *args)
+{
+	const RenderControl *render_control{nullptr};
+	yafaray_SceneModifiedFlags scene_modified_flags{YAFARAY_SCENE_MODIFIED_NOTHING};
+	if(!PyArg_ParseTuple(args, "Oi", &render_control, &scene_modified_flags)) Py_RETURN_FALSE;
+	yafaray_Bool result{yafaray_preprocessScene(self->scene_, render_control->get(), scene_modified_flags)};
+	if(result == YAFARAY_BOOL_TRUE) Py_RETURN_TRUE;
+	else Py_RETURN_FALSE;
 }
 
 } // namespace yafaray_bindings::python

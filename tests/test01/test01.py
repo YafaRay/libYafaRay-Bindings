@@ -46,8 +46,6 @@ tex_height = 200
 param_map.clear()
 param_map.setString("type", "ColorAlpha")
 param_map.setString("image_optimization", "none")  # Note: only "none" allows more HDR values > 1.f #
-param_map.setInt("tex_width", tex_width)
-param_map.setInt("tex_height", tex_height)
 param_map.setString("filename", "test01_tex.tga")
 image_id = scene.createImage("Image01", param_map)
 
@@ -137,23 +135,25 @@ param_map.setString("type", "constant")
 param_map.setColor("color", 1, 1, 1, 1)
 scene.defineBackground(param_map)
 
-# Creating Renderer #
-param_map.clear()
-renderer = libyafaray4_bindings.Renderer(logger, scene, "Renderer1", param_map)
-
-# Creating surface integrator #
+# Creating SurfaceIntegrator #
 param_map.clear()
 param_map.setString("type", "photonmapping")
-renderer.defineSurfaceIntegrator(param_map)
+# param_map.setInt("AA_minsamples",  50)
+param_map.setInt("AA_passes", 1)
+param_map.setInt("AA_inc_samples", 2)
+param_map.setFloat("AA_threshold", 0.05)
+param_map.setInt("threads", -1)
+param_map.setInt("threads_photons", -1)
+surface_integrator = libyafaray4_bindings.SurfaceIntegrator(logger, "SurfaceIntegrator1", param_map)
 
 # Creating volume integrator #
 param_map.clear()
 param_map.setString("type", "none")
-renderer.defineVolumeIntegrator(scene, param_map)
+surface_integrator.defineVolumeIntegrator(scene, param_map)
 
 # Creating Film #
 param_map.clear()
-film = libyafaray4_bindings.Film(logger, renderer, "Film1", param_map)
+film = libyafaray4_bindings.Film(logger, surface_integrator, "Film1", param_map)
 
 # Creating camera #
 param_map.clear()
@@ -215,33 +215,31 @@ def highlightPixelCallback(view, x, y, r, g, b, a):
 
 film.setHighlightPixelCallback(highlightPixelCallback)
 
-# Setting up render parameters #
-param_map.clear()
-param_map.setInt("width", result_image_width)
-param_map.setInt("height", result_image_height)
-# param_map.setInt("AA_minsamples",  50)
-param_map.setInt("AA_passes", 2)
-param_map.setInt("AA_inc_samples", 2)
-param_map.setFloat("AA_threshold", 0.05)
-param_map.setInt("threads", -1)
-param_map.setInt("threads_photons", -1)
-renderer.setup(scene, param_map)
-
 
 # Rendering #
 def monitorCallback(steps_total, steps_done, tag):
     print("*PYTHON MONITOR CALLBACK*", steps_total, steps_done, tag)
 
+# Creating RenderControl #
+render_control = libyafaray4_bindings.RenderControl()
 
-renderer.render(film, scene, monitorCallback)
+# Creating RenderMonitor #
+render_monitor = libyafaray4_bindings.RenderMonitor(monitorCallback)
+
+scene_modified_flags = scene.checkAndClearModifiedFlags()
+scene.preprocess(render_control, scene_modified_flags)
+surface_integrator.preprocess(render_control, render_monitor, scene)
+surface_integrator.render(render_control, render_monitor, film, 0)
 # yi.guiCreateRenderWidget(1000, 600)
 
 # yi.xmlParseFile("/home/david/yafa/src/libYafaRay-Xml/tests/test01/test01.xml")
 # yi.guiCreateRenderWidget(1000, 600)
-
-del film
-del renderer
-del scene
-del param_map_list
-del param_map
-del logger
+#
+# del render_monitor
+# del render_control
+# del film
+# del surface_integrator
+# del scene
+# del param_map_list
+# del param_map
+# del logger

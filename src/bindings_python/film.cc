@@ -22,7 +22,7 @@
 #include "bindings_python/tile.h"
 #include "bindings_python/param_map.h"
 #include "bindings_python/logger.h"
-#include "bindings_python/renderer.h"
+#include "bindings_python/surface_integrator.h"
 #include "common/image.h"
 
 namespace yafaray_bindings::python
@@ -90,14 +90,14 @@ PyTypeObject Film::py_type_{
 PyObject *Film::create(PyTypeObject *type, PyObject *args, PyObject *)
 {
 	Logger *logger{nullptr};
-	Renderer *renderer{nullptr};
+	SurfaceIntegrator *surface_integrator{nullptr};
 	const char *name{nullptr};
 	const ParamMap *param_map{nullptr};
-	if(!PyArg_ParseTuple(args, "OOsO", &logger, &renderer, &name, &param_map)) Py_RETURN_FALSE;
+	if(!PyArg_ParseTuple(args, "OOsO", &logger, &surface_integrator, &name, &param_map)) Py_RETURN_FALSE;
 	auto *self = reinterpret_cast<Film *>(type->tp_alloc(type, 0));
 	if(self)
 	{
-		self->film_ = yafaray_createFilm(logger->get(), renderer->get(), name, param_map->get());
+		self->film_ = yafaray_createFilm(logger->get(), surface_integrator->get(), name, param_map->get());
 		if(self->film_)
 		{
 			self->images_collection_ = std::make_unique<ImagesCollection>(yafaray_getFilmWidth(self->film_), yafaray_getFilmHeight(self->film_));

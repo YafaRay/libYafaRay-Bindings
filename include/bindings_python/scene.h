@@ -67,6 +67,8 @@ class Scene final // NOLINT(cppcoreguidelines-pro-type-member-init)
 		[[nodiscard]] static PyObject *createImage(Scene *self, PyObject *args);
 		[[nodiscard]] static PyObject *setImageColor(Scene *self, PyObject *args);
 		[[nodiscard]] static PyObject *getImageColor(Scene *self, PyObject *args);
+		[[nodiscard]] static PyObject *checkAndClearModifiedFlags(Scene *self, PyObject *);
+		[[nodiscard]] static PyObject *preprocess(Scene *self, PyObject *args);
 
 		PyObject_HEAD
 		yafaray_Scene *scene_ = nullptr;
