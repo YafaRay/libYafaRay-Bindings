@@ -75,7 +75,7 @@ PyTypeObject RenderMonitor::py_type_{
 PyObject *RenderMonitor::create(PyTypeObject *type, PyObject *args, PyObject *)
 {
 	PyObject *callback{nullptr};
-	if(!PyArg_ParseTuple(args, "O:monitorCallback", &callback)) Py_RETURN_FALSE;
+	PyArg_ParseTuple(args, "|O:monitorCallback", &callback);
 	auto *self = reinterpret_cast<RenderMonitor *>(type->tp_alloc(type, 0));
 	if(self)
 	{
