@@ -139,7 +139,7 @@ scene.defineBackground(param_map)
 param_map.clear()
 param_map.setString("type", "photonmapping")
 # param_map.setInt("AA_minsamples",  50)
-param_map.setInt("AA_passes", 1)
+param_map.setInt("AA_passes", 5)
 param_map.setInt("AA_inc_samples", 2)
 param_map.setFloat("AA_threshold", 0.05)
 param_map.setInt("threads", -1)
@@ -208,9 +208,9 @@ def highlightAreaCallback(area_id, x_0, y_0, x_1, y_1, tiles):
 film.setHighlightAreaCallback(highlightAreaCallback)
 
 
-def highlightPixelCallback(view, x, y, r, g, b, a):
+def highlightPixelCallback(x, y, r, g, b, a):
     if x % 10 == 0 and y % 10 == 0:
-        print("*PYTHON HIGHLIGHT PIXEL CALLBACK*", view, x, y, r, g, b, a)
+        print("*PYTHON HIGHLIGHT PIXEL CALLBACK*", x, y, r, g, b, a)
 
 
 film.setHighlightPixelCallback(highlightPixelCallback)
