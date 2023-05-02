@@ -39,6 +39,9 @@ class RenderControl final // NOLINT(cppcoreguidelines-pro-type-member-init)
 		[[nodiscard]] static PyObject *create(PyTypeObject *type, PyObject *args, PyObject *);
 		[[nodiscard]] static PyObject *destroy(RenderControl *self);
 		[[nodiscard]] static PyObject *cancel(RenderControl *self, PyObject *args);
+		[[nodiscard]] static PyObject *setForNormalStart(RenderControl *self, PyObject *args);
+		[[nodiscard]] static PyObject *setForProgressiveStart(RenderControl *self, PyObject *args);
+		[[nodiscard]] static PyObject *setForResuming(RenderControl *self, PyObject *args);
 
 		PyObject_HEAD
 		yafaray_RenderControl *render_control_ = nullptr;

@@ -226,10 +226,11 @@ render_control = libyafaray4_bindings.RenderControl()
 # Creating RenderMonitor #
 render_monitor = libyafaray4_bindings.RenderMonitor(monitorCallback)
 
+render_control.setForNormalStart()
 scene_modified_flags = scene.checkAndClearModifiedFlags()
 scene.preprocess(render_control, scene_modified_flags)
-surface_integrator.preprocess(render_control, render_monitor, scene)
-surface_integrator.render(render_control, render_monitor, film, 0)
+surface_integrator.preprocess(render_monitor, render_control, scene)
+surface_integrator.render(render_control, render_monitor, film)
 # yi.guiCreateRenderWidget(1000, 600)
 
 # yi.xmlParseFile("/home/david/yafa/src/libYafaRay-Xml/tests/test01/test01.xml")

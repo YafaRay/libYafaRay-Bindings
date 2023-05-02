@@ -113,13 +113,13 @@ PyObject *SurfaceIntegrator::defineVolumeIntegrator(SurfaceIntegrator *self, PyO
 
 PyObject *SurfaceIntegrator::preprocess(SurfaceIntegrator *self, PyObject *args)
 {
-	RenderControl *render_control{nullptr};
 	RenderMonitor *render_monitor{nullptr};
+	const RenderControl *render_control{nullptr};
 	const Scene *scene{nullptr};
-	if(!PyArg_ParseTuple(args, "OOO", &render_control, &render_monitor, &scene)) Py_RETURN_FALSE;
+	if(!PyArg_ParseTuple(args, "OOO", &render_monitor, &render_control, &scene)) Py_RETURN_FALSE;
 	//Save Python main thread state so the Python GIL is released and can be used in the render threads
 	PyThreadState *save_thread = PyEval_SaveThread();
-	yafaray_preprocessSurfaceIntegrator(render_control->get(), render_monitor->get(), self->surface_integrator_, scene->get());
+	yafaray_preprocessSurfaceIntegrator(render_monitor->get(), self->surface_integrator_, render_control->get(), scene->get());
 	//Restore Python main thread state so the main thread retrieves the Python GIL
 	PyEval_RestoreThread(save_thread);
 	Py_RETURN_NONE;
@@ -130,12 +130,11 @@ PyObject *SurfaceIntegrator::render(SurfaceIntegrator *self, PyObject *args)
 	RenderControl *render_control{nullptr};
 	RenderMonitor *render_monitor{nullptr};
 	Film *film{nullptr};
-	yafaray_RenderMode render_mode{YAFARAY_RENDER_NORMAL};
-	if(PyArg_ParseTuple(args, "OOOi", &render_control, &render_monitor, &film, &render_mode))
+	if(PyArg_ParseTuple(args, "OOO", &render_control, &render_monitor, &film))
 	{
 		//Save Python main thread state so the Python GIL is released and can be used in the render threads
 		PyThreadState *save_thread = PyEval_SaveThread();
-		yafaray_render(render_control->get(), render_monitor->get(), self->surface_integrator_, film->get(), render_mode);
+		yafaray_render(render_control->get(), render_monitor->get(), self->surface_integrator_, film->get());
 		//Restore Python main thread state so the main thread retrieves the Python GIL
 		PyEval_RestoreThread(save_thread);
 	}

@@ -24,8 +24,11 @@
 namespace yafaray_bindings::python
 {
 PyMethodDef RenderControl::py_methods_[]{
-		{"create",                  reinterpret_cast<PyCFunction>(create),                  METH_NOARGS, ""},
-		{"cancel",                  reinterpret_cast<PyCFunction>(cancel),                  METH_NOARGS, ""},
+		{"create",                 reinterpret_cast<PyCFunction>(create),                 METH_NOARGS, ""},
+		{"cancel",                 reinterpret_cast<PyCFunction>(cancel),                 METH_NOARGS, ""},
+		{"setForNormalStart",      reinterpret_cast<PyCFunction>(setForNormalStart),      METH_NOARGS, ""},
+		{"setForProgressiveStart", reinterpret_cast<PyCFunction>(setForProgressiveStart), METH_NOARGS, ""},
+		{"setForResuming",         reinterpret_cast<PyCFunction>(setForResuming),         METH_NOARGS, ""},
 		{nullptr} /* Sentinel */
 };
 
@@ -96,6 +99,27 @@ PyObject *RenderControl::cancel(RenderControl *self, PyObject *args)
 	yafaray_cancelRendering(self->render_control_);
 	Py_RETURN_NONE;
 }
+
+PyObject *RenderControl::setForNormalStart(RenderControl *self, PyObject *args)
+{
+	yafaray_setRenderControlForNormalStart(self->render_control_);
+	Py_RETURN_NONE;
+}
+
+
+PyObject *RenderControl::setForProgressiveStart(RenderControl *self, PyObject *args)
+{
+	yafaray_setRenderControlForProgressiveStart(self->render_control_);
+	Py_RETURN_NONE;
+}
+
+
+PyObject *RenderControl::setForResuming(RenderControl *self, PyObject *args)
+{
+	yafaray_setRenderControlForResuming(self->render_control_);
+	Py_RETURN_NONE;
+}
+
 
 } // namespace yafaray_bindings::python
 
