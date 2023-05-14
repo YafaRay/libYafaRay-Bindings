@@ -46,6 +46,7 @@ class Film final // NOLINT(cppcoreguidelines-pro-type-member-init)
 		static void highlightAreaCallback(int area_id, int x_0, int y_0, int x_1, int y_1, void *callback_user_data);
 		[[nodiscard]] static PyObject *create(PyTypeObject *type, PyObject *args, PyObject *kwds);
 		[[nodiscard]] static PyObject *destroy(Film * self);
+		//[[nodiscard]] static PyObject *getName(Film *self, PyObject *);
 		[[nodiscard]] static PyObject *getWidth(Film * self, PyObject *);
 		[[nodiscard]] static PyObject *getHeight(Film * self, PyObject *);
 		[[nodiscard]] static PyObject *defineCamera(Film *self, PyObject *args);

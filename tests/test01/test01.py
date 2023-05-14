@@ -35,9 +35,10 @@ result_image_width = 400
 result_image_height = 400
 
 # Creating scene #
+scene = libyafaray4_bindings.Scene(logger, "Scene1")
 param_map = libyafaray4_bindings.ParamMap()
-param_map.setString("scene_accelerator", "yafaray-kdtree-original")
-scene = libyafaray4_bindings.Scene(logger, "Scene1", param_map)
+param_map.setString("type", "yafaray-kdtree-original")
+scene.setAcceleratorParams(param_map)
 
 # Creating image from RAM or file #
 tex_width = 200

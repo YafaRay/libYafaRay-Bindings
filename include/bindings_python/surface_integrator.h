@@ -38,6 +38,7 @@ class SurfaceIntegrator final // NOLINT(cppcoreguidelines-pro-type-member-init)
 	private:
 		[[nodiscard]] static PyObject *create(PyTypeObject *type, PyObject *args, PyObject *);
 		[[nodiscard]] static PyObject *destroy(SurfaceIntegrator *self);
+		//[[nodiscard]] static PyObject *getName(SurfaceIntegrator *self, PyObject *);
 		[[nodiscard]] static PyObject *defineVolumeIntegrator(SurfaceIntegrator *self, PyObject *args);
 		[[nodiscard]] static PyObject *preprocess(SurfaceIntegrator *self, PyObject *args);
 		[[nodiscard]] static PyObject *render(SurfaceIntegrator *self, PyObject *args);

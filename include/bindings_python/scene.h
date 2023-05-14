@@ -38,7 +38,9 @@ class Scene final // NOLINT(cppcoreguidelines-pro-type-member-init)
 	private:
 		[[nodiscard]] static PyObject *create(PyTypeObject *type, PyObject *args, PyObject *);
 		[[nodiscard]] static PyObject *destroy(Scene *self);
+		//[[nodiscard]] static PyObject *getName(Scene *self, PyObject *);
 		[[nodiscard]] static PyObject *getObjectId(Scene *self, PyObject *args);
+		[[nodiscard]] static PyObject *setAcceleratorParams(Scene *self, PyObject *args);
 		[[nodiscard]] static PyObject *getMaterialId(Scene *self, PyObject *args);
 		[[nodiscard]] static PyObject *getImageId(Scene *self, PyObject *args);
 		[[nodiscard]] static PyObject *initObject(Scene *self, PyObject *);

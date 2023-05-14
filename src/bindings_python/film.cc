@@ -29,6 +29,7 @@ namespace yafaray_bindings::python
 {
 PyMethodDef Film::py_methods_[]{
 		{"create",                    reinterpret_cast<PyCFunction>(create),                    METH_VARARGS, ""},
+		//{"getName",                   reinterpret_cast<PyCFunction>(getName),                   METH_NOARGS,  ""},
 		{"getWidth",                  reinterpret_cast<PyCFunction>(getWidth),                  METH_NOARGS,  ""},
 		{"getHeight",                 reinterpret_cast<PyCFunction>(getHeight),                 METH_NOARGS,  ""},
 		{"defineCamera",              reinterpret_cast<PyCFunction>(defineCamera),              METH_VARARGS, ""},
