@@ -138,10 +138,9 @@ PyObject *Film::getHeight(Film *self, PyObject *)
 
 PyObject *Film::defineCamera(Film *self, PyObject *args)
 {
-	const char *name{nullptr};
 	const ParamMap *param_map{nullptr};
-	if(!PyArg_ParseTuple(args, "sO", &name, &param_map)) Py_RETURN_FALSE;
-	yafaray_defineCamera(self->film_, name, param_map->get());
+	if(!PyArg_ParseTuple(args, "O", &param_map)) Py_RETURN_FALSE;
+	yafaray_defineCamera(self->film_, param_map->get());
 	Py_RETURN_NONE;
 }
 

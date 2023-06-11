@@ -165,7 +165,7 @@ param_map.setFloat("focal", 1.1)
 param_map.setVector("from", 8.6, -7.2, 8.1)
 param_map.setVector("to", 8.0, -6.7, 7.6)
 param_map.setVector("up", 8.3, -6.8, 9)
-film.defineCamera("cam_1", param_map)
+film.defineCamera(param_map)
 
 # Creating image output #
 param_map.clear()
