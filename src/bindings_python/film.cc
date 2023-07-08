@@ -27,20 +27,21 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef Film::py_methods_[]{
-		{"create",                    reinterpret_cast<PyCFunction>(create),                    METH_VARARGS, ""},
+		{"create",                       reinterpret_cast<PyCFunction>(create),                    METH_VARARGS, ""},
 		//{"getName",                   reinterpret_cast<PyCFunction>(getName),                   METH_NOARGS,  ""},
-		{"getWidth",                  reinterpret_cast<PyCFunction>(getWidth),                  METH_NOARGS,  ""},
-		{"getHeight",                 reinterpret_cast<PyCFunction>(getHeight),                 METH_NOARGS,  ""},
-		{"defineCamera",              reinterpret_cast<PyCFunction>(defineCamera),              METH_VARARGS, ""},
-		{"createOutput",              reinterpret_cast<PyCFunction>(createOutput),              METH_VARARGS, ""},
-		{"setNotifyLayerCallback",    reinterpret_cast<PyCFunction>(setNotifyLayerCallback),    METH_VARARGS, ""},
-		{"setPutPixelCallback",       reinterpret_cast<PyCFunction>(setPutPixelCallback),       METH_VARARGS, ""},
-		{"setHighlightPixelCallback", reinterpret_cast<PyCFunction>(setHighlightPixelCallback), METH_VARARGS, ""},
-		{"setFlushAreaCallback",      reinterpret_cast<PyCFunction>(setFlushAreaCallback),      METH_VARARGS, ""},
-		{"setFlushCallback",          reinterpret_cast<PyCFunction>(setFlushCallback),          METH_VARARGS, ""},
-		{"setHighlightAreaCallback",  reinterpret_cast<PyCFunction>(setHighlightAreaCallback),  METH_VARARGS, ""},
-		{"defineLayer",               reinterpret_cast<PyCFunction>(defineLayer),               METH_VARARGS, ""},
+		{"get_width",                    reinterpret_cast<PyCFunction>(getWidth),                  METH_NOARGS,  ""},
+		{"get_height",                   reinterpret_cast<PyCFunction>(getHeight),                 METH_NOARGS,  ""},
+		{"define_camera",                reinterpret_cast<PyCFunction>(defineCamera),              METH_VARARGS, ""},
+		{"create_output",                reinterpret_cast<PyCFunction>(createOutput),              METH_VARARGS, ""},
+		{"set_notify_layer_callback",    reinterpret_cast<PyCFunction>(setNotifyLayerCallback),    METH_VARARGS, ""},
+		{"set_put_pixel_callback",       reinterpret_cast<PyCFunction>(setPutPixelCallback),       METH_VARARGS, ""},
+		{"set_highlight_pixel_callback", reinterpret_cast<PyCFunction>(setHighlightPixelCallback), METH_VARARGS, ""},
+		{"set_flush_area_callback",      reinterpret_cast<PyCFunction>(setFlushAreaCallback),      METH_VARARGS, ""},
+		{"set_flush_callback",           reinterpret_cast<PyCFunction>(setFlushCallback),          METH_VARARGS, ""},
+		{"set_highlight_area_callback",  reinterpret_cast<PyCFunction>(setHighlightAreaCallback),  METH_VARARGS, ""},
+		{"define_layer",                 reinterpret_cast<PyCFunction>(defineLayer),               METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

@@ -22,19 +22,20 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef Logger::py_methods_[]{
-		{"create",                   reinterpret_cast<PyCFunction>(create),                   METH_NOARGS,  ""},
-		{"setCallback",              reinterpret_cast<PyCFunction>(setCallback),              METH_VARARGS, ""},
-		{"enablePrintDateTime",      reinterpret_cast<PyCFunction>(enablePrintDateTime),      METH_VARARGS, ""},
-		{"setConsoleVerbosityLevel", reinterpret_cast<PyCFunction>(setConsoleVerbosityLevel), METH_VARARGS, ""},
-		{"setLogVerbosityLevel",     reinterpret_cast<PyCFunction>(setLogVerbosityLevel),     METH_VARARGS, ""},
-		{"logLevelFromString",       reinterpret_cast<PyCFunction>(logLevelFromString),       METH_VARARGS, ""},
-		{"printDebug",               reinterpret_cast<PyCFunction>(printDebug),               METH_VARARGS, ""},
-		{"printVerbose",             reinterpret_cast<PyCFunction>(printVerbose),             METH_VARARGS, ""},
-		{"printInfo",                reinterpret_cast<PyCFunction>(printInfo),                METH_VARARGS, ""},
-		{"printParams",              reinterpret_cast<PyCFunction>(printParams),              METH_VARARGS, ""},
-		{"printWarning",             reinterpret_cast<PyCFunction>(printWarning),             METH_VARARGS, ""},
-		{"printError",               reinterpret_cast<PyCFunction>(printError),               METH_VARARGS, ""},
+		{"create",                      reinterpret_cast<PyCFunction>(create),                   METH_NOARGS,  ""},
+		{"set_callback",                reinterpret_cast<PyCFunction>(setCallback),              METH_VARARGS, ""},
+		{"enable_print_date_time",      reinterpret_cast<PyCFunction>(enablePrintDateTime),      METH_VARARGS, ""},
+		{"set_console_verbosity_level", reinterpret_cast<PyCFunction>(setConsoleVerbosityLevel), METH_VARARGS, ""},
+		{"set_log_verbosity_level",     reinterpret_cast<PyCFunction>(setLogVerbosityLevel),     METH_VARARGS, ""},
+		{"log_level_from_string",       reinterpret_cast<PyCFunction>(logLevelFromString),       METH_VARARGS, ""},
+		{"print_debug",                 reinterpret_cast<PyCFunction>(printDebug),               METH_VARARGS, ""},
+		{"print_verbose",               reinterpret_cast<PyCFunction>(printVerbose),             METH_VARARGS, ""},
+		{"print_info",                  reinterpret_cast<PyCFunction>(printInfo),                METH_VARARGS, ""},
+		{"print_params",                reinterpret_cast<PyCFunction>(printParams),              METH_VARARGS, ""},
+		{"print_warning",               reinterpret_cast<PyCFunction>(printWarning),             METH_VARARGS, ""},
+		{"print_error",                 reinterpret_cast<PyCFunction>(printError),               METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

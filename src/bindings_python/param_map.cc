@@ -23,17 +23,18 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef ParamMap::py_methods_[]{
-		{"create",             reinterpret_cast<PyCFunction>(create),             METH_NOARGS,  ""},
-		{"setVector",          reinterpret_cast<PyCFunction>(setVector),          METH_VARARGS, ""},
-		{"setString",          reinterpret_cast<PyCFunction>(setString),          METH_VARARGS, ""},
-		{"setBool",            reinterpret_cast<PyCFunction>(setBool),            METH_VARARGS, ""},
-		{"setInt",             reinterpret_cast<PyCFunction>(setInt),             METH_VARARGS, ""},
-		{"setFloat",           reinterpret_cast<PyCFunction>(setFloat),           METH_VARARGS, ""},
-		{"setColor",           reinterpret_cast<PyCFunction>(setColor),           METH_VARARGS, ""},
-		{"setMatrix",          reinterpret_cast<PyCFunction>(setMatrix),          METH_VARARGS, ""},
-		{"clear",              reinterpret_cast<PyCFunction>(clear),              METH_NOARGS,  ""},
-		{"setInputColorSpace", reinterpret_cast<PyCFunction>(setInputColorSpace), METH_VARARGS, ""},
+		{"create",                reinterpret_cast<PyCFunction>(create),             METH_NOARGS,  ""},
+		{"set_vector",            reinterpret_cast<PyCFunction>(setVector),          METH_VARARGS, ""},
+		{"set_string",            reinterpret_cast<PyCFunction>(setString),          METH_VARARGS, ""},
+		{"set_bool",              reinterpret_cast<PyCFunction>(setBool),            METH_VARARGS, ""},
+		{"set_int",               reinterpret_cast<PyCFunction>(setInt),             METH_VARARGS, ""},
+		{"set_float",             reinterpret_cast<PyCFunction>(setFloat),           METH_VARARGS, ""},
+		{"set_color",             reinterpret_cast<PyCFunction>(setColor),           METH_VARARGS, ""},
+		{"set_matrix",            reinterpret_cast<PyCFunction>(setMatrix),          METH_VARARGS, ""},
+		{"clear",                 reinterpret_cast<PyCFunction>(clear),              METH_NOARGS,  ""},
+		{"set_input_color_space", reinterpret_cast<PyCFunction>(setInputColorSpace), METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

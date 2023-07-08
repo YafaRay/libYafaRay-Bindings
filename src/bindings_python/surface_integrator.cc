@@ -28,12 +28,13 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef SurfaceIntegrator::py_methods_[]{
-		{"create",                 reinterpret_cast<PyCFunction>(create),                 METH_VARARGS, ""},
+		{"create",                   reinterpret_cast<PyCFunction>(create),                 METH_VARARGS, ""},
 		//{"getName",                reinterpret_cast<PyCFunction>(getName),                METH_NOARGS,  ""},
-		{"defineVolumeIntegrator", reinterpret_cast<PyCFunction>(defineVolumeIntegrator), METH_VARARGS, ""},
-		{"preprocess",             reinterpret_cast<PyCFunction>(preprocess),             METH_VARARGS, ""},
-		{"render",                 reinterpret_cast<PyCFunction>(render),                 METH_VARARGS, ""},
+		{"define_volume_integrator", reinterpret_cast<PyCFunction>(defineVolumeIntegrator), METH_VARARGS, ""},
+		{"preprocess",               reinterpret_cast<PyCFunction>(preprocess),             METH_VARARGS, ""},
+		{"render",                   reinterpret_cast<PyCFunction>(render),                 METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

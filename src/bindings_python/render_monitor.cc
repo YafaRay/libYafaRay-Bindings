@@ -23,8 +23,9 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef RenderMonitor::py_methods_[]{
-		{"create",                  reinterpret_cast<PyCFunction>(create),                  METH_VARARGS, ""},
+		{"create", reinterpret_cast<PyCFunction>(create), METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

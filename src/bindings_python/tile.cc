@@ -22,6 +22,7 @@
 
 namespace yafaray_bindings::python
 {
+
 PySequenceMethods Tile::sequence_methods_{
 		(lenfunc) size,
 		nullptr,

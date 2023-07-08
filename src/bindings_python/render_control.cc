@@ -23,12 +23,13 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef RenderControl::py_methods_[]{
-		{"create",                 reinterpret_cast<PyCFunction>(create),                 METH_NOARGS, ""},
-		{"cancel",                 reinterpret_cast<PyCFunction>(cancel),                 METH_NOARGS, ""},
-		{"setForNormalStart",      reinterpret_cast<PyCFunction>(setForNormalStart),      METH_NOARGS, ""},
-		{"setForProgressiveStart", reinterpret_cast<PyCFunction>(setForProgressiveStart), METH_NOARGS, ""},
-		{"setForResuming",         reinterpret_cast<PyCFunction>(setForResuming),         METH_NOARGS, ""},
+		{"create",                    reinterpret_cast<PyCFunction>(create),                 METH_NOARGS, ""},
+		{"cancel",                    reinterpret_cast<PyCFunction>(cancel),                 METH_NOARGS, ""},
+		{"set_for_normal_start",      reinterpret_cast<PyCFunction>(setForNormalStart),      METH_NOARGS, ""},
+		{"set_for_progressive_start", reinterpret_cast<PyCFunction>(setForProgressiveStart), METH_NOARGS, ""},
+		{"set_for_resuming",          reinterpret_cast<PyCFunction>(setForResuming),         METH_NOARGS, ""},
 		{nullptr} /* Sentinel */
 };
 

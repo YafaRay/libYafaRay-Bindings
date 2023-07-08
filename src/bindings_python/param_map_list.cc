@@ -24,10 +24,11 @@
 
 namespace yafaray_bindings::python
 {
+
 PyMethodDef ParamMapList::py_methods_[]{
-		{"create",      reinterpret_cast<PyCFunction>(create),      METH_VARARGS, ""},
-		{"clear",       reinterpret_cast<PyCFunction>(clear),       METH_NOARGS,  ""},
-		{"addParamMap", reinterpret_cast<PyCFunction>(addParamMap), METH_VARARGS, ""},
+		{"create",        reinterpret_cast<PyCFunction>(create),      METH_VARARGS, ""},
+		{"clear",         reinterpret_cast<PyCFunction>(clear),       METH_NOARGS,  ""},
+		{"add_param_map", reinterpret_cast<PyCFunction>(addParamMap), METH_VARARGS, ""},
 		{nullptr} /* Sentinel */
 };
 
