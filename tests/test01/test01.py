@@ -18,7 +18,7 @@
 
 import libyafaray4_bindings
 
-logger = libyafaray4_bindings.Logger()
+logger = libyafaray4_bindings.Logger("RenderLog")
 logger.set_console_verbosity_level(logger.log_level_from_string("debug"))
 logger.set_log_verbosity_level(logger.log_level_from_string("debug"))
 #logger.set_console_log_colors_enabled(True)

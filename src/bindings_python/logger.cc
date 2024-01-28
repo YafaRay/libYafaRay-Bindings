@@ -24,7 +24,7 @@ namespace yafaray_bindings::python
 {
 
 PyMethodDef Logger::py_methods_[]{
-		{"create",                      reinterpret_cast<PyCFunction>(create),                   METH_NOARGS,  ""},
+		{"create",                      reinterpret_cast<PyCFunction>(create),                   METH_VARARGS,  ""},
 		{"set_callback",                reinterpret_cast<PyCFunction>(setCallback),              METH_VARARGS, ""},
 		{"enable_print_date_time",      reinterpret_cast<PyCFunction>(enablePrintDateTime),      METH_VARARGS, ""},
 		{"set_console_verbosity_level", reinterpret_cast<PyCFunction>(setConsoleVerbosityLevel), METH_VARARGS, ""},
@@ -83,12 +83,14 @@ PyTypeObject Logger::py_type_{
 		create, /* tp_new */
 };
 
-PyObject *Logger::create(PyTypeObject *type, PyObject *, PyObject *)
+PyObject *Logger::create(PyTypeObject *type, PyObject *args, PyObject *)
 {
+	const char *logger_name{nullptr};
+	if(!PyArg_ParseTuple(args, "s", &logger_name)) Py_RETURN_FALSE;
 	auto *self = reinterpret_cast<Logger *>(type->tp_alloc(type, 0));
 	if(self)
 	{
-		self->logger_ = yafaray_createLogger(Logger::callback, self, YAFARAY_DISPLAY_CONSOLE_NORMAL);
+		self->logger_ = yafaray_createLogger(logger_name, Logger::callback, self, YAFARAY_DISPLAY_CONSOLE_NORMAL);
 	}
 	return reinterpret_cast<PyObject *>(self);
 }
